@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo xmlns:decoration-bf="http://www.w3.org/2001/XMLSchema">
     <data>
+<!--        inherit-->
+        <record id="fleet_inherit_registration_inherit" model="ir.ui.view">
+            <field name="name">fleet.inherit.registrations</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <field name="first_contract_date" position="replace">
+                    <field name="registration_date" />
+                </field>
+
+            </field>
+        </record>
+<!--        Group by and fillter view-->
+        <record id="vehicle_rental_groupby" model="ir.ui.view">
+            <field name="name">vehicle.rental.group.view</field>
+            <field name="model">vehicle.rental</field>
+            <field name="arch" type="xml">
+                <search string="vehicle rent search">
+<!--                    Group by-->
+                    <group expand="1" string="Group by model">
+                        <filter name="group_by_model" string="Model" domain="[]" context="{'group_by':'model'}"/>
+                        <filter name="group_by_brand" string="Brand" domain="[]" context="{'group_by':'brand'}"/>
+                    </group>
+<!--                    fillter view-->
+                    <filter name="filter_by_available" string="Available" domain="[('state', '=','available')]" />
+                    <filter name="filter_by_notavailable" string="Not Available" domain="[('state', '=','notavailable')]" />
+<!--                    Search field-->
+                    <field name="search_by_vehicle_name" string="Vehicle Name" filter_domain="[('name','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
 <!--        kanban-->
         <record id="vehicle_kanban" model="ir.ui.view">
             <field name="name">vehicle.rental.kanban</field>
@@ -8,7 +39,7 @@
             <field name="arch" type="xml">
                 <kanban class="vehicle_kanban_view" string="Rental">
                     <field name="name"/>
-                    <field name="vehicle"/>
+                    <field name="vehicle_id"/>
                     <field name ="brand"/>
                     <field name="registration_date"/>
                     <field name="model"/>
@@ -22,13 +53,15 @@
                                     </strong>
                                  </div>
                                 <div>
-                                    Type  : <field name="vehicle"/>
+                                    Type  : <field name="vehicle_id"/>
                                 </div>
                                 <div class="vehicle_kanban_view_other_details">
                                     Brand : <field name ="brand"/>
                                 </div>
                                 <div>
-                                    Rent Amount : <field name="rent"/>
+                                    <field name="currency_id" invisible="True"/>
+                                    Rent Amount : <field name="rent" widget="monetary"
+                                    options="{'currency_field': 'currency_id'}"/>
                                 </div>
                             </div>
                         </t>
@@ -43,11 +76,14 @@
             <field name="arch" type="xml">
                 <tree string="Rental">
                     <field name="name"/>
-                    <field name="vehicle"/>
+                    <field name="vehicle_id" />
                     <field name ="brand"/>
-                    <field name="registration_date"/>
-                    <field name="model"/>
-                    <field name="rent"/>
+                    <field name="registration_date" optional="hide"/>
+                    <field name="model" optional="hide"/>
+                    <field name="currency_id" invisible="True"/>
+                    <field name="rent" widget="monetary"
+                     options="{'currency_field': 'currency_id'}" optional="hide"/>
+                    <field name="state" />
                 </tree>
             </field>
         </record>
@@ -57,17 +93,21 @@
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
                 <form string="Rental">
+                    <header>
+                         <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>
-                                <field name="vehicle" />
-                                <field name="brand"/>
+                                <field name="name" />
+                                <field name="vehicle_id" />
+                                <field name="brand" />
                             </group>
                             <group>
                                 <field name="registration_date"/>
                                 <field name="model"/>
-                                <field name="rent"/>
+                                <field name="currency_id" invisible="True"/>
+                                <field name="rent" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
                     </sheet>
@@ -80,7 +120,7 @@
       <field name="name">Rental</field>
       <field name="res_model">vehicle.rental</field>
 
-      <field name="view_mode">tree,form,kanban</field>
+      <field name="view_mode">kanban,tree,form</field>
       <field name="help" type="html">
         <p class="o_view_nocontent_smiling_face">
             Create a Vehicle rental
@@ -90,7 +130,8 @@
 
 <!--  Sequnce menas that the listed order -->
       <menuitem id="vehicle_home" name="Vehicle Rental" sequence = "1"/>
-      <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home" action="vechicle_rental.action_window"/>
+      <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
+                action="vechicle_rental.action_window"/>
 
     </data>
 </odoo>

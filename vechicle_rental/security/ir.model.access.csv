@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_vechicle_rental_vechicle_rental,vechicle_rental.vechicle_rental,model_vechicle_rental_vechicle_rental,base.group_user,1,1,1,1
-access_vechile_user,access.rental.user,vechicle_rental.model_vehicle.rental,,1,1,1,1
+access_vechile_user,access.vechile.user,model_vehicle_rental,,1,1,1,1
