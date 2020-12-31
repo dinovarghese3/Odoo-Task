@@ -1,137 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo xmlns:decoration-bf="http://www.w3.org/2001/XMLSchema">
+<odoo>
     <data>
-<!--        inherit-->
+        <!--        inherit-->
         <record id="fleet_inherit_registration_inherit" model="ir.ui.view">
             <field name="name">fleet.inherit.registrations</field>
             <field name="model">fleet.vehicle</field>
             <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
             <field name="arch" type="xml">
                 <field name="first_contract_date" position="replace">
-                    <field name="registration_date" />
+                    <field name="registration_date"/>
                 </field>
 
             </field>
         </record>
-<!--        Group by and fillter view-->
-        <record id="vehicle_rental_groupby" model="ir.ui.view">
+        <!--        Group by and filter view-->
+        <record id="vehicle_rental_group_by" model="ir.ui.view">
             <field name="name">vehicle.rental.group.view</field>
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
                 <search string="vehicle rent search">
-<!--                    Group by-->
+                    <field name="name"
+                           filter_domain="['|',('name','ilike',self),
+                           ('brand_id','ilike',self)]"/>
+                    <!--                    Group by-->
                     <group expand="1" string="Group by model">
-                        <filter name="group_by_model" string="Model" domain="[]" context="{'group_by':'model'}"/>
-                        <filter name="group_by_brand" string="Brand" domain="[]" context="{'group_by':'brand'}"/>
+                        <filter name="group_by_model" string="Model" domain="[]"
+                                context="{'group_by':'model'}"/>
+                        <filter name="_brand" string="Brand" domain="[]"
+                                context="{'group_by':'brand_id'}"/>
                     </group>
-<!--                    fillter view-->
-                    <filter name="filter_by_available" string="Available" domain="[('state', '=','available')]" />
-                    <filter name="filter_by_notavailable" string="Not Available" domain="[('state', '=','notavailable')]" />
-<!--                    Search field-->
-                    <field name="search_by_vehicle_name" string="Vehicle Name" filter_domain="[('name','ilike',self)]"/>
+                    <!--                    filter view-->
+                    <filter name="filter_by_available" string="Available"
+                            domain="[('state', '=','available')]"/>
+                    <filter name="filter_by_notavailable" string="Not Available"
+                            domain="[('state', '=','notavailable')]"/>
+                    <!--                    Search field-->
                 </search>
             </field>
         </record>
-<!--        kanban-->
+        <!--        kanban-->
         <record id="vehicle_kanban" model="ir.ui.view">
             <field name="name">vehicle.rental.kanban</field>
             <field name="model">vehicle.rental</field>
+
             <field name="arch" type="xml">
                 <kanban class="vehicle_kanban_view" string="Rental">
                     <field name="name"/>
                     <field name="vehicle_id"/>
-                    <field name ="brand"/>
+                    <field name="brand_id"/>
                     <field name="registration_date"/>
                     <field name="model"/>
                     <field name="rent"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="vehicle_kanban_view_global_click">
-                                <div class="vehicle_kanban_view_details">
-                                    <strong class="o_kanban_record_title" >
-                                    <field name="name" widget="res_partner_many2one"/>
-                                    </strong>
-                                 </div>
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_content">
+                               <strong>
+                                   <div class="oe_kanban_project_list o_kanban_record_subtitle">
+                                       <field name="name"/>
+                                   </div>
+                               </strong>
                                 <div>
-                                    Type  : <field name="vehicle_id"/>
+                                     Brand :<field name="brand_id"/>
                                 </div>
-                                <div class="vehicle_kanban_view_other_details">
-                                    Brand : <field name ="brand"/>
+                                <div>
+                                    Type:<field name="vehicle_id"/>
                                 </div>
                                 <div>
                                     <field name="currency_id" invisible="True"/>
-                                    Rent Amount : <field name="rent" widget="monetary"
-                                    options="{'currency_field': 'currency_id'}"/>
+                                    <field name="rent" widget="monetary"
+                                         options="
+                                         {'currency_field': 'currency_id'}"/>
                                 </div>
                             </div>
-                        </t>
+                        </div>
+                    </t>
                     </templates>
                 </kanban>
             </field>
         </record>
-<!--        Tree view-->
+        <!--        Tree view-->
         <record id="vehicle_tree" model="ir.ui.view">
             <field name="name">vehicle.rental.tree</field>
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
                 <tree string="Rental">
                     <field name="name"/>
-                    <field name="vehicle_id" />
-                    <field name ="brand"/>
+                    <field name="vehicle_id"/>
+                    <field name="brand_id"/>
                     <field name="registration_date" optional="hide"/>
                     <field name="model" optional="hide"/>
                     <field name="currency_id" invisible="True"/>
                     <field name="rent" widget="monetary"
-                     options="{'currency_field': 'currency_id'}" optional="hide"/>
-                    <field name="state" />
+                           options="{'currency_field': 'currency_id'}"
+                           optional="hide"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
-<!--        form view -->
+        <!--        form view -->
         <record id="vehicle_form" model="ir.ui.view">
             <field name="name">vehicle.rental.form</field>
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
                 <form string="Rental">
                     <header>
-                         <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                        <field name="state" widget="statusbar"
+                               options="{'clickable': '1'}"/>
                     </header>
                     <sheet>
                         <group>
                             <group>
-                                <field name="name" />
-                                <field name="vehicle_id" />
-                                <field name="brand" />
+                                <field name="name"/>
+
+                                <field name="vehicle_id"/>
+                                <field name="brand_id"/>
                             </group>
                             <group>
                                 <field name="registration_date"/>
                                 <field name="model"/>
                                 <field name="currency_id" invisible="True"/>
-                                <field name="rent" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="rent" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
                     </sheet>
                 </form>
             </field>
-</record>
-    <!-- actions opening views on models -->
+        </record>
+        <!-- actions opening views on models -->
 
-    <record model="ir.actions.act_window" id="vechicle_rental.action_window">
-      <field name="name">Rental</field>
-      <field name="res_model">vehicle.rental</field>
+        <record model="ir.actions.act_window"
+                id="vechicle_rental.action_window">
+            <field name="name">Rental</field>
+            <field name="res_model">vehicle.rental</field>
 
-      <field name="view_mode">kanban,tree,form</field>
-      <field name="help" type="html">
-        <p class="o_view_nocontent_smiling_face">
-            Create a Vehicle rental
-        </p>
-      </field>
-    </record>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_filter_by_available":1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Vehicle rental
+                </p>
+            </field>
+        </record>
 
-<!--  Sequnce menas that the listed order -->
-      <menuitem id="vehicle_home" name="Vehicle Rental" sequence = "1"/>
-      <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
-                action="vechicle_rental.action_window"/>
+        <!--  Sequence menus that the listed order -->
+        <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1"/>
+        <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
+                  action="vechicle_rental.action_window"/>
 
     </data>
 </odoo>
