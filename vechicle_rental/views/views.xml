@@ -19,6 +19,7 @@
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
                 <search string="vehicle rent search">
+                    <!--                    Search field-->
                     <field name="name"
                            filter_domain="['|',('name','ilike',self),
                            ('brand_id','ilike',self)]"/>
@@ -34,7 +35,7 @@
                             domain="[('state', '=','available')]"/>
                     <filter name="filter_by_notavailable" string="Not Available"
                             domain="[('state', '=','notavailable')]"/>
-                    <!--                    Search field-->
+
                 </search>
             </field>
         </record>
@@ -128,13 +129,11 @@
                 </form>
             </field>
         </record>
-        <!-- actions opening views on models -->
-
+        <!-- actions opening views on models rent vehicle -->
         <record model="ir.actions.act_window"
                 id="vechicle_rental.action_window">
-            <field name="name">Rental</field>
+            <field name="name">RentRequest</field>
             <field name="res_model">vehicle.rental</field>
-
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_filter_by_available":1}
             </field>
@@ -144,11 +143,12 @@
                 </p>
             </field>
         </record>
-
+<!--        action opening views o model Rent Request-->
         <!--  Sequence menus that the listed order -->
         <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1"/>
         <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
                   action="vechicle_rental.action_window"/>
-
+        <menuitem id="request" name="Rent Request" parent="vehicle_home"
+                  action="vechicle_rental.action_window"/>
     </data>
 </odoo>
