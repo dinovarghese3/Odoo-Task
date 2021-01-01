@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.tools.safe_eval import datetime
 
 
 class VehicleRental(models.Model):
@@ -8,7 +9,7 @@ class VehicleRental(models.Model):
 
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle',
                                  domain=[('state_id', '=', 3)])
-    name = fields.Char(string='Name', required=True)
+    name = fields.Many2one(string='Name', required=True,related='vehicle_id.brand_id')
     brand_id = fields.Many2one(string='Brand',
                                related='vehicle_id.brand_id', store=True)
     print(brand_id)
@@ -16,7 +17,8 @@ class VehicleRental(models.Model):
                                     help='Date the vehicle has Register',
                                     readonly=True,
                                     related='vehicle_id.registration_date')
-    model = fields.Char(string='Model')
+
+    model = fields.Date(string='Model',related='vehicle_id.registration_date')
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda
                                       self: self.env.user.company_id.id)
