@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!--        action for Smart button-->
+<!--        <record id="all_rental_requests" model="ir.actions.act_window">-->
+<!--            <field name="name">All Rent Request</field>-->
+<!--            <field name="res_model">vehicle.request</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="domain">[('name','ilike','vehicle_id')]</field>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="o_view_nocontent_smiling_face">-->
+<!--                    Create a Vehicle rental Request-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
         <!--        inherit-->
         <record id="fleet_inherit_registration_inherit" model="ir.ui.view">
             <field name="name">fleet.inherit.registrations</field>
@@ -20,9 +32,9 @@
             <field name="arch" type="xml">
                 <search string="vehicle rent search">
                     <!--                    Search field-->
-                    <field name="name"
-                           filter_domain="['|',('name','ilike',self),
-                           ('brand_id','ilike',self)]"/>
+                    <field string="Name" name="name"
+                           filter_domain="['|',('name', 'ilike', self),('brand_id', 'ilike', self)]"/>
+                    <field  name="brand_id" />
                     <!--                    Group by-->
                     <group expand="1" string="Group by model">
                         <filter name="group_by_model" string="Model" domain="[]"
@@ -36,6 +48,36 @@
                     <filter name="filter_by_notavailable" string="Not Available"
                             domain="[('state', '=','notavailable')]"/>
 
+                </search>
+            </field>
+        </record>
+        <!--        GroupBy search filter for rentrequest-->
+        <record id="vehicle_request_group_by" model="ir.ui.view">
+            <field name="name">vehicle.request.group.view</field>
+            <field name="model">vehicle.request</field>
+            <field name="arch" type="xml">
+                <search string="Rent request search">
+                    <!--                    search-->
+
+                    <!--                    Group by-->
+                    <group expand="1" string="Group by customer">
+                        <filter name="group_by_customer" string="Customer"
+                                domain="[]"
+                                context="{'group_by':'customer_id'}"/>
+                        <filter name="group_by_vehicle" string="Vehicle"
+                                domain="[]"
+                                context="{'group_by':'vehicle_id'}"/>
+                        <filter name="group_by_state" string="State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+
+                    <!--                    filter view-->
+                    <filter name="filter_by_draft" string="Draft"
+                            domain="[('state', '=','draft')]"/>
+                    <filter name="filter_by_confirm" string="Confirm"
+                            domain="[('state', '=','confirm')]"/>
+                    <filter name="filter_by_return" string="Return"
+                            domain="[('state', '=','return')]"/>
                 </search>
             </field>
         </record>
@@ -54,33 +96,39 @@
                     <field name="rent"/>
                     <templates>
                         <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                            <div class="o_kanban_content">
-                               <strong>
-                                   <div class="oe_kanban_project_list o_kanban_record_subtitle">
-                                       <field name="name"/>
-                                   </div>
-                               </strong>
-                                <div>
-                                     Brand :<field name="brand_id"/>
-                                </div>
-                                <div>
-                                    Type:<field name="vehicle_id"/>
-                                </div>
-                                <div>
-                                    <field name="currency_id" invisible="True"/>
-                                    <field name="rent" widget="monetary"
-                                         options="
+                            <div t-attf-class="oe_kanban_card
+                            oe_kanban_global_click">
+                                <div class="o_kanban_content">
+                                    <strong>
+                                        <div class=
+                                                     "oe_kanban_project_list
+                                                     o_kanban_record_subtitle">
+                                            <field name="name"/>
+                                        </div>
+                                    </strong>
+                                    <div>
+                                        Brand :
+                                        <field name="brand_id"/>
+                                    </div>
+                                    <div>
+                                        Type:
+                                        <field name="vehicle_id"/>
+                                    </div>
+                                    <div>
+                                        <field name="currency_id"
+                                               invisible="True"/>
+                                        <field name="rent" widget="monetary"
+                                               options="
                                          {'currency_field': 'currency_id'}"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </t>
                     </templates>
                 </kanban>
             </field>
         </record>
-<!--        Kanban view for Vehicle rental request-->
+        <!--        Kanban view for Vehicle rental request-->
         <record id="vehicle_request_kanban" model="ir.ui.view">
             <field name="name">vehicle.request.kanban</field>
             <field name="model">vehicle.request</field>
@@ -89,27 +137,35 @@
 
                     <templates>
                         <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                            <div class="o_kanban_content">
-                               <strong>
-                                   <div class="oe_kanban_project_list o_kanban_record_subtitle">
-                                       <field name="sequence"/>
-                                   </div>
-                               </strong>
-                                <div>
-                                     Brand :<field name="customer_id"/>
-                                </div>
-                                <div>
-                                    Type:<field name="vehicle_id"/>
-                                </div>
-                                <div>
-                                    <field name="currency_id" invisible="True"/>
-                                    <field name="rent" widget="monetary"
-                                         options="
+                            <div t-attf-class="oe_kanban_card
+                            oe_kanban_global_click">
+                                <div class="o_kanban_content">
+                                    <strong>
+                                        <div class="oe_kanban_project_list
+                                        o_kanban_record_subtitle">
+                                            <field name="sequence"/>
+                                        </div>
+                                    </strong>
+                                    <div>
+                                        Customer :
+                                        <field name="customer_id"/>
+                                    </div>
+                                    <div>
+                                        Vehicle:
+                                        <field name="vehicle_id"/>
+                                    </div>
+                                    <div>
+                                        <field name="currency_id"
+                                               invisible="True"/>
+                                        <field name="rent" widget="monetary"
+                                               options="
                                          {'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div>
+                                        <field name="state"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </t>
                     </templates>
                 </kanban>
@@ -134,7 +190,7 @@
                 </tree>
             </field>
         </record>
-<!--        Rent Request Tree view-->
+        <!--        Rent Request Tree view-->
         <record id="vehicle_request_tree" model="ir.ui.view">
             <field name="name">vehicle.request.tree</field>
             <field name="model">vehicle.request</field>
@@ -148,12 +204,12 @@
                     <field name="rent" widget="monetary"
                            options="{'currency_field': 'currency_id'}"/>
                     <field name="from_date" optional="hide"/>
-                    <field name="to_date" optional ="hide"/>
-                    <field name="period" readonly="1"/>
+                    <field name="to_date" optional="hide"/>
+                    <field name="period"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
-
         <!--        form view -->
         <record id="vehicle_form" model="ir.ui.view">
             <field name="name">vehicle.rental.form</field>
@@ -165,11 +221,16 @@
                                options="{'clickable': '1'}"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="all_rental_requests"
+                                    string="All requests" type="object"
+                                    class="oe_stat_button" icon="fa-car" widget="statinfo">
+                            </button>
+                        </div>
                         <group>
                             <group>
-                                <field name="name"/>
-
                                 <field name="vehicle_id"/>
+                                 <field name="name"/>
                                 <field name="brand_id"/>
                             </group>
                             <group>
@@ -180,19 +241,40 @@
                                        options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </group>
+<!--                        pages-->
+                        <notebook>
+                            <page string="Rent Request">
+                                <field name="all_request" filter_domain="[('vehicle_id','=','self)]"/>
+                            </page>
+                            <page string="Rent Charges">
+                                <field name="rent_charges">
+                                    <tree editable="Top" create="1" multi_edit="1">
+                                        <field name="amount"/>
+                                        <field name="time"/>
+                                        <field name="period"/>
+                                        <field name="vehicle_id" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-<!--        form view for the rent request-->
-        <record id="vehicle_request_form" model="ir.ui.view" >
+        <!--        form view for the rent request-->
+        <record id="vehicle_request_form" model="ir.ui.view">
             <field name="name">vehicle.request.form</field>
             <field name="model">vehicle.request</field>
             <field name="arch" type="xml">
                 <form string="Requests">
                     <header>
-                        <button name="action_confirm" string="Confirm"
-                                class="oe_highlight" states="draft"/>
+                        <button name="button_confirm" string="Confirm"
+                                class="oe_highlight" type="object"
+                                states="draft"/>
+                        <button name="button_return" string="Return"
+                                class="oe_highlight" type="object"
+                                states="confirm"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirm,return"/>
                     </header>
@@ -205,7 +287,11 @@
                         <group>
                             <group>
 
-                                <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True}'/>
+                                <field name="customer_id"
+                                       widget="res_partner_many2one"
+                                       context="{'res_partner_search_mode': 'customer',
+                                        'show_address': 1, 'show_vat': True}"
+                                       options='{"always_reload": True}'/>
                                 <field name="vehicle_id"/>
                                 <field name="request_date"/>
                                 <field name="currency_id" invisible="True"/>
@@ -215,7 +301,8 @@
                             <group>
                                 <field name="from_date"/>
                                 <field name="to_date"/>
-                                <field name="period" readonly="True" force_save="1"/>
+                                <field name="period" readonly="True"
+                                       force_save="1"/>
                             </group>
                         </group>
                     </sheet>
@@ -238,7 +325,7 @@
             </field>
         </record>
 
-<!--        action opening views o model Rent Request-->
+        <!--        action opening views o model Rent Request-->
         <record id="vehicle_request" model="ir.actions.act_window">
             <field name="name">RentRequest</field>
             <field name="res_model">vehicle.request</field>
@@ -253,7 +340,7 @@
         <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1"/>
         <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
                   action="vechicle_rental.action_window"/>
-        <menuitem id="request" name="RentRequest" parent="vehicle_home"
+        <menuitem id="request" name="Rent Request" parent="vehicle_home"
                   action="vehicle_request"/>
     </data>
 </odoo>
