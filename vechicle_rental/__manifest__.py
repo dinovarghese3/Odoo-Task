@@ -23,6 +23,9 @@
         'views/views.xml',
         'views/templates.xml',
         'data/sequence.xml',
+        'views/rent_request.xml',
+        'views/rent_vehicle.xml',
+        'views/registration_date_fleet.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

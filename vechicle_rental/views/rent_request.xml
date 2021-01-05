@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        GroupBy search filter for rentrequest-->
+        <record id="vehicle_request_group_by" model="ir.ui.view">
+            <field name="name">vehicle.request.group.view</field>
+            <field name="model">vehicle.request</field>
+            <field name="arch" type="xml">
+                <search string="Rent request search">
+                    <!--                    search-->
+
+                    <!--                    Group by-->
+                    <group expand="1" string="Group by customer">
+                        <filter name="group_by_customer" string="Customer"
+                                domain="[]"
+                                context="{'group_by':'customer_id'}"/>
+                        <filter name="group_by_vehicle" string="Vehicle"
+                                domain="[]"
+                                context="{'group_by':'vehicle_id'}"/>
+                        <filter name="group_by_state" string="State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+
+                    <!--                    filter view-->
+                    <filter name="filter_by_draft" string="Draft"
+                            domain="[('state', '=','draft')]"/>
+                    <filter name="filter_by_confirm" string="Confirm"
+                            domain="[('state', '=','confirm')]"/>
+                    <filter name="filter_by_return" string="Return"
+                            domain="[('state', '=','return')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!--        Kanban view for Vehicle rental request-->
+        <record id="vehicle_request_kanban" model="ir.ui.view">
+            <field name="name">vehicle.request.kanban</field>
+            <field name="model">vehicle.request</field>
+            <field name="arch" type="xml">
+                <kanban class="vehicle_kanban_view" string="Rental">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card
+                            oe_kanban_global_click">
+                                <div class="o_kanban_content">
+                                    <strong>
+                                        <div class="oe_kanban_project_list
+                                        o_kanban_record_subtitle">
+                                            <field name="sequence"/>
+                                        </div>
+                                    </strong>
+                                    <div>
+                                        Customer :
+                                        <field name="customer_id"/>
+                                    </div>
+                                    <div>
+                                        Vehicle:
+                                        <field name="vehicle_id"/>
+                                    </div>
+                                    <div>
+                                        <field name="currency_id"
+                                               invisible="True"/>
+                                        <field name="rent" widget="monetary"
+                                               options="
+                                         {'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div>
+                                        <field name="state"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!--        Rent Request Tree view-->
+        <record id="vehicle_request_tree" model="ir.ui.view">
+            <field name="name">vehicle.request.tree</field>
+            <field name="model">vehicle.request</field>
+            <field name="arch" type="xml">
+                <tree string="Rental">
+                    <field name="sequence"/>
+                    <field name="customer_id"/>
+                    <field name="vehicle_id"/>
+                    <field name="request_date" optional="hide"/>
+                    <field name="currency_id" invisible="True"/>
+                    <field name="rent" widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                    <field name="from_date" optional="hide"/>
+                    <field name="to_date" optional="hide"/>
+                    <field name="period"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--        form view for the rent request-->
+        <record id="vehicle_request_form" model="ir.ui.view">
+            <field name="name">vehicle.request.form</field>
+            <field name="model">vehicle.request</field>
+            <field name="arch" type="xml">
+                <form string="Requests">
+                    <header>
+                        <button name="button_confirm" string="Confirm"
+                                class="oe_highlight" type="object"
+                                states="draft"/>
+                        <button name="button_return" string="Return"
+                                class="oe_highlight" type="object"
+                                states="confirm"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirm,return"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sequence"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+
+                                <field name="customer_id"
+                                       widget="res_partner_many2one"
+                                       context="{'res_partner_search_mode': 'customer',
+                                        'show_address': 1, 'show_vat': True}"
+                                       options='{"always_reload": True}'/>
+                                <field name="vehicle_id"/>
+                                <field name="request_date"/>
+                                <field name="currency_id" invisible="True"/>
+                                <field name="rent" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <group>
+                                <field name="from_date"/>
+                                <field name="to_date"/>
+                                <field name="period" readonly="True"
+                                       force_save="1"/>
+                                <label for="period_type" string="Amount Type" />
+                                <div class="address_format">
+                                    <field name="period_type" class="oe_inline"  options="{'no_open': True}"/>
+                                    <field name="number_of_period" class="oe_inline" />
+                                </div>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

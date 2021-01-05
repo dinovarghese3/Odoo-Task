@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+                 <!--        inherit-->
+        <record id="fleet_inherit_registration_inherit" model="ir.ui.view">
+            <field name="name">fleet.inherit.registrations</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <field name="first_contract_date" position="replace">
+                    <field name="registration_date"/>
+                </field>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

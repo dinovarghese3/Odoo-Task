@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-""" Vehicle Rents"""
 from odoo import models, fields, api
 from odoo.tools.safe_eval import datetime
 
 
 class VehicleRental(models.Model):
-    """Class contain all Vehicle details"""
     _name = 'vehicle.rental'
-    _description = " Vehicle rental app"
+    _description = "Class contain all Vehicle details"
 
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle',
                                  domain=[('state_id', '=', 3)])
@@ -30,18 +28,16 @@ class VehicleRental(models.Model):
         [('available', 'Available'), ('notavailable', 'Not available'),
          ('sold', 'Sold')],
         string='State', default='available')
-    all_request = fields.One2many('vehicle.request', 'vehicle_id',
-                                  string='All Requests',
-                                  domain=lambda self: [
-                                      ('state', '=', 'confirm')])
-    rent_charges = fields.One2many('rent.charges', 'vehicle_id')
+    all_request_ids = fields.One2many('vehicle.request', 'vehicle_id',
+                                  string='All Requests', store=True)
+    rent_charges_ids = fields.One2many('rent.charges', 'vehicle_id')
 
     def all_rental_requests(self):
-        """ Function for Smart button"""
+        """ Function for Smart button to return the car requests"""
         return {
             'type': 'ir.actions.act_window',
             'name': 'Requests',
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'res_model': 'vehicle.request',
             'domain': [('vehicle_id', '=', self.name)],
             'context': "{'create': False}"
@@ -65,17 +61,8 @@ class RentCharges(models.Model):
                                   default=lambda
                                       self: self.env.user.company_id.currency_id)
     amount = fields.Monetary(string='Amount')
-    period = fields.Float(strig='Period', default=1)
     time = fields.Selection([('hour', 'Hour'), ('day', 'Day'), ('week', 'Week'),
                              ('month', 'Month')], string="Time", default='day')
-
-    @api.onchange('period')
-    def _onchange_time(self):
-        if self.time is 'day':
-            self.amount = self.period * self.vehicle_id.rent
-            print(self.vehicle_id.rent)
-            print(self.amount)
-            print(self.period)
 
 
 class RegisterDate(models.Model):
