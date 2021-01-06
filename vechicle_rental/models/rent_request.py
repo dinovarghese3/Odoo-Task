@@ -28,15 +28,23 @@ class RentRequest(models.Model):
                                       self: self.env.user.company_id.currency_id)
     rent = fields.Monetary(string="Rent", related='vehicle_id.rent')
 
-    number_of_period = fields.Float(string="Period",default=2)
-    period_type = fields.Many2one('rent.charges')
-    amount = fields.Monetary(string="Amount", related='period_type.amount')
+    number_of_period = fields.Integer(string="Period", default=1)
+    period_type = fields.Many2one('rent.charges', string="type")
+    amount = fields.Monetary(string="Amount", compute='compute_amount',
+                             store=True)
 
-    @api.onchange('period_type')
+    @api.onchange('vehicle_id')
     def _onchange_period_type(self):
-        print(self.period_type.time)
-        if self.period_type.time is 'day':
-            self.amount=self.period_type.amount * self.number_of_period
+        for rec in self:
+            return {'domain': {
+                'period_type': [('vehicle_id', '=', rec.vehicle_id.id)]}}
+
+    @api.depends('number_of_period')
+    def compute_amount(self):
+        print(self.vehicle_id)
+        print(self.vehicle_id.rent_charges_ids)
+        self.write(
+            {'amount': self.period_type.amount * self.number_of_period})
 
     def button_confirm(self):
         """ Button confirm """

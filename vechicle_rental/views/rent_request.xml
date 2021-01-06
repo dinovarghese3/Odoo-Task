@@ -120,9 +120,8 @@
                         </div>
                         <group>
                             <group>
-
                                 <field name="customer_id"
-                                       widget="res_partner_many2one"
+                                       widget='res_partner_many2one'
                                        context="{'res_partner_search_mode': 'customer',
                                         'show_address': 1, 'show_vat': True}"
                                        options='{"always_reload": True}'/>
@@ -137,10 +136,13 @@
                                 <field name="to_date"/>
                                 <field name="period" readonly="True"
                                        force_save="1"/>
-                                <label for="period_type" string="Amount Type" />
+                                <label for="period_type" string="PeriodType"/>
                                 <div class="address_format">
-                                    <field name="period_type" class="oe_inline"  options="{'no_open': True}"/>
-                                    <field name="number_of_period" class="oe_inline" />
+                                    <field name="period_type" class="oe_inline"
+                                           style="max-width: 50%"/>
+                                    <field name="number_of_period"
+                                           class="oe_inline"
+                                           style="max-width: 50%"/>
                                 </div>
                                 <field name="amount"/>
                             </group>

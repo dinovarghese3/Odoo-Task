@@ -9,7 +9,7 @@ class VehicleRental(models.Model):
 
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle',
                                  domain=[('state_id', '=', 3)])
-    name = fields.Char(string='Name', compute='_compute_name',
+    name = fields.Char(string='Name',
                        related='vehicle_id.name',
                        store=True)
     brand_id = fields.Many2one(string='Brand',
@@ -28,8 +28,9 @@ class VehicleRental(models.Model):
         [('available', 'Available'), ('notavailable', 'Not available'),
          ('sold', 'Sold')],
         string='State', default='available')
+
     all_request_ids = fields.One2many('vehicle.request', 'vehicle_id',
-                                  string='All Requests', store=True)
+                                      string='All Requests', store=True)
     rent_charges_ids = fields.One2many('rent.charges', 'vehicle_id')
 
     def all_rental_requests(self):
@@ -52,10 +53,15 @@ class VehicleRental(models.Model):
             self.model = str((datetime.datetime.strptime(
                 str(self.registration_date), "%Y-%m-%d")).year)
 
+    _sql_constraints = [
+        ('unique_name', 'unique(name)', 'Vehicle is already exists!')
+    ]
+
 
 class RentCharges(models.Model):
-    """Amount calculation based on date"""
     _name = 'rent.charges'
+    _description = 'Amount calculation based on date'
+    _rec_name = 'time'
     vehicle_id = fields.Many2one('vehicle.rental', string="vehicle")
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda
@@ -66,9 +72,8 @@ class RentCharges(models.Model):
 
 
 class RegisterDate(models.Model):
-    """ Adding new field registration date to fleet module """
     _inherit = 'fleet.vehicle'
-
+    _description = 'Adding new field registration date to fleet module'
     registration_date = fields.Date('Registration Date ', required=False,
                                     help='Date when the vehicle has been '
                                          'Register')

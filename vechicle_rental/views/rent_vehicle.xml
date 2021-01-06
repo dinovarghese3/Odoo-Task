@@ -8,7 +8,8 @@
                 <search string="vehicle rent search">
                     <!--                    Search field-->
                     <field string="Name" name="name"
-                           filter_domain="['|',('name', 'ilike', self),('brand_id', 'ilike', self)]"/>
+                           filter_domain="['|',('name', 'ilike', self),
+                           ('brand_id', 'ilike', self)]"/>
                     <field name="brand_id"/>
                     <!--                    Group by-->
                     <group expand="1" string="Group by model">
@@ -93,7 +94,8 @@
             <field name="arch" type="xml">
                 <form string="Rental">
                     <header>
-                        <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="available,notavailable"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -121,7 +123,8 @@
                         <notebook>
                             <page string="Rent Request">
                                 <field name="all_request_ids"
-                                       filter_domain="[('vehicle_id','=','self)]"/>
+                                       filter_domain="[('vehicle_id','=',self)]"
+                                />
                             </page>
                             <page string="Rent Charges">
                                 <field name="rent_charges_ids">
@@ -129,8 +132,8 @@
                                           multi_edit="1">
                                         <field name="time" style="width:50%"/>
                                         <field name="amount" style="width:50%"/>
-
-                                        <field name="vehicle_id" invisible='True'/>
+                                        <field name="vehicle_id"
+                                               invisible='True'/>
                                         <field name="currency_id"
                                                invisible='True'/>
                                     </tree>
