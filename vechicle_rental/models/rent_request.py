@@ -1,4 +1,3 @@
-from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
@@ -12,7 +11,8 @@ class RentRequest(models.Model):
                            default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', String="Customer",
                                   required=True)
-    request_date = fields.Date(string="Request Date", default=datetime.today())
+    request_date = fields.Date(string="Request Date",
+                               default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
                                  domain=[('state', '=', 'available')],
                                  required=True, force_create=False)
@@ -26,12 +26,12 @@ class RentRequest(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda
                                       self: self.env.user.company_id.currency_id)
-    rent = fields.Monetary(string="Rent", related='vehicle_id.rent')
+    rent = fields.Monetary(string="Rent", related='period_type.amount')
 
     number_of_period = fields.Integer(string="Period", default=1)
     period_type = fields.Many2one('rent.charges', string="type")
-    amount = fields.Monetary(string="Amount", compute='compute_amount',
-                             store=True)
+    amount = fields.Monetary(string="Amount", store=True,
+                             compute='compute_amount_period_type')
 
     @api.onchange('vehicle_id')
     def _onchange_period_type(self):
@@ -39,10 +39,10 @@ class RentRequest(models.Model):
             return {'domain': {
                 'period_type': [('vehicle_id', '=', rec.vehicle_id.id)]}}
 
-    @api.depends('number_of_period')
-    def compute_amount(self):
-        print(self.vehicle_id)
-        print(self.vehicle_id.rent_charges_ids)
+    @api.depends('number_of_period','period_type')
+    def compute_amount_period_type(self):
+        # print(self.vehicle_id)
+        # print(self.vehicle_id.rent_charges_ids)
         self.write(
             {'amount': self.period_type.amount * self.number_of_period})
 
@@ -51,8 +51,9 @@ class RentRequest(models.Model):
         for rec in self:
             rec.write({'state': 'confirm'})
             rec.vehicle_id.write({'state': 'notavailable'})
-            print(rec.vehicle_id.all_request_ids)
-            rec.vehicle_id.write({'all_request_ids': self})
+            # print(rec.vehicle_id.all_request_ids)
+            return {'domain': {'all_request_ids': self.id}}
+            # return dict(domain={'check_id': self.id})
 
     def button_return(self):
         """Button return"""
@@ -72,15 +73,14 @@ class RentRequest(models.Model):
     @api.onchange('from_date', 'to_date')
     def _onchange_from_date_to_date(self):
         """Period calculation"""
-        if self.from_date and self.to_date:
-            if self.from_date <= self.to_date:
-                self.period = (self.to_date - self.from_date).days + 1
+        if self.from_date and self.to_date and (self.from_date <= self.to_date):
+            self.period = (self.to_date - self.from_date).days + 1
 
     @api.constrains('from_date', 'to_date')
     def _constrain_from_date_to_date(self):
         """Date Validation"""
-        if self.from_date and self.to_date:
-            for rec in self:
-                if rec.from_date > rec.to_date:
-                    raise ValidationError(
-                        _('Sorry, To Date Must be greater Than From Date...'))
+        for rec in self.filtered(
+                lambda l: l.from_date and l.to_date and (
+                        l.from_date > l.to_date)):
+            raise ValidationError(
+                _('Sorry, To Date Must be greater Than From Date...'))

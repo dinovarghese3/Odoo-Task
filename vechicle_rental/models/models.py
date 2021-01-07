@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import datetime
 
 
@@ -28,9 +29,8 @@ class VehicleRental(models.Model):
         [('available', 'Available'), ('notavailable', 'Not available'),
          ('sold', 'Sold')],
         string='State', default='available')
-
     all_request_ids = fields.One2many('vehicle.request', 'vehicle_id',
-                                      string='All Requests', store=True)
+                                      string='All Requests')
     rent_charges_ids = fields.One2many('rent.charges', 'vehicle_id')
 
     def all_rental_requests(self):
@@ -41,7 +41,7 @@ class VehicleRental(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'vehicle.request',
             'domain': [('vehicle_id', '=', self.name)],
-            'context': "{'create': False}"
+            'context': "{'create': False}",
         }
 
     @api.onchange('registration_date')
@@ -54,7 +54,8 @@ class VehicleRental(models.Model):
                 str(self.registration_date), "%Y-%m-%d")).year)
 
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Vehicle is already exists!')
+        ('unique_name', 'unique(name)', 'Vehicle is already exists!'),
+
     ]
 
 
@@ -69,6 +70,13 @@ class RentCharges(models.Model):
     amount = fields.Monetary(string='Amount')
     time = fields.Selection([('hour', 'Hour'), ('day', 'Day'), ('week', 'Week'),
                              ('month', 'Month')], string="Time", default='day')
+
+    @api.constrains('time')
+    def _constrains_time(self):
+        result=self.vehicle_id.rent_charges_ids - self
+        for rec in result:
+            if rec.time == self.time:
+                raise ValidationError("You cannot select same time")
 
 
 class RegisterDate(models.Model):

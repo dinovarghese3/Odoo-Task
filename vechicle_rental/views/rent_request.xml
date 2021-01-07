@@ -91,6 +91,7 @@
                     <field name="from_date" optional="hide"/>
                     <field name="to_date" optional="hide"/>
                     <field name="period"/>
+                    <field name="amount"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -137,11 +138,13 @@
                                 <field name="period" readonly="True"
                                        force_save="1"/>
                                 <label for="period_type" string="PeriodType"/>
+
                                 <div class="address_format">
-                                    <field name="period_type" class="oe_inline"
-                                           style="max-width: 50%"/>
+
                                     <field name="number_of_period"
                                            class="oe_inline"
+                                           style="max-width: 50%"/>
+                                    <field name="period_type" class="oe_inline"
                                            style="max-width: 50%"/>
                                 </div>
                                 <field name="amount"/>

@@ -122,16 +122,14 @@
                         <!--                        pages-->
                         <notebook>
                             <page string="Rent Request">
-                                <field name="all_request_ids"
-                                       filter_domain="[('vehicle_id','=',self)]"
-                                />
+                                <field name="all_request_ids"/>
                             </page>
                             <page string="Rent Charges">
                                 <field name="rent_charges_ids">
                                     <tree editable="Top" create="1"
                                           multi_edit="1">
-                                        <field name="time" style="width:50%"/>
-                                        <field name="amount" style="width:50%"/>
+                                        <field name="time" style="width:100px"/>
+                                        <field name="amount" style="width:100px"/>
                                         <field name="vehicle_id"
                                                invisible='True'/>
                                         <field name="currency_id"
