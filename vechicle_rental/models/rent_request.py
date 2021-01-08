@@ -1,11 +1,14 @@
+from unittest import result
+
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
 class RentRequest(models.Model):
     _name = 'vehicle.request'
-    _description = "All Rent requests"
+    _description = "Rent requests"
     _rec_name = 'sequence'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     sequence = fields.Char(string="Request Number", readonly=True,
                            required=True, copy=False, index=True,
                            default=lambda self: _('New'))
@@ -14,24 +17,27 @@ class RentRequest(models.Model):
     request_date = fields.Date(string="Request Date",
                                default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
+                                 track_visibility='onchange',
                                  domain=[('state', '=', 'available')],
                                  required=True, force_create=False)
-    from_date = fields.Date(string="From Date")
-    to_date = fields.Date(string="To Date")
+    from_date = fields.Date(string="From Date", track_visibility='onchange')
+    to_date = fields.Date(string="To Date", track_visibility='always')
     period = fields.Integer(string="Period")
     state = fields.Selection(
         [('draft', 'Draft'), ('confirm', 'Confirm'),
          ('return', 'Return')],
-        string='State', default='draft')
+        string='State', default='draft', track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda
                                       self: self.env.user.company_id.currency_id)
     rent = fields.Monetary(string="Rent", related='period_type.amount')
 
     number_of_period = fields.Integer(string="Period", default=1)
-    period_type = fields.Many2one('rent.charges', string="type")
+    period_type = fields.Many2one('rent.charges', string="type",
+                                  track_visibility='onchange')
     amount = fields.Monetary(string="Amount", store=True,
-                             compute='compute_amount_period_type')
+                             compute='compute_amount_period_type',
+                             track_visibility='onchange')
 
     @api.onchange('vehicle_id')
     def _onchange_period_type(self):
@@ -39,7 +45,7 @@ class RentRequest(models.Model):
             return {'domain': {
                 'period_type': [('vehicle_id', '=', rec.vehicle_id.id)]}}
 
-    @api.depends('number_of_period','period_type')
+    @api.depends('number_of_period', 'period_type')
     def compute_amount_period_type(self):
         # print(self.vehicle_id)
         # print(self.vehicle_id.rent_charges_ids)
@@ -50,9 +56,9 @@ class RentRequest(models.Model):
         """ Button confirm """
         for rec in self:
             rec.write({'state': 'confirm'})
-            rec.vehicle_id.write({'state': 'notavailable'})
+            rec.vehicle_id.write({'state': 'not_available'})
             # print(rec.vehicle_id.all_request_ids)
-            return {'domain': {'all_request_ids': self.id}}
+            # return {'domain': {'all_request_ids': self.id}}
             # return dict(domain={'check_id': self.id})
 
     def button_return(self):
@@ -67,8 +73,8 @@ class RentRequest(models.Model):
         if vals.get('sequence', 'New') == 'New':
             vals['sequence'] = self.env['ir.sequence'].next_by_code(
                 'vehicle.request.sequence') or 'New'
-        result = super().create(vals)  # super(RentRequest, self) same
-        return result
+                        # super(RentRequest, self) same
+        return super().create(vals)
 
     @api.onchange('from_date', 'to_date')
     def _onchange_from_date_to_date(self):

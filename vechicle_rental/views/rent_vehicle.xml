@@ -22,7 +22,7 @@
                     <filter name="filter_by_available" string="Available"
                             domain="[('state', '=','available')]"/>
                     <filter name="filter_by_notavailable" string="Not Available"
-                            domain="[('state', '=','notavailable')]"/>
+                            domain="[('state', '=','not_available')]"/>
 
                 </search>
             </field>
@@ -122,7 +122,7 @@
                         <!--                        pages-->
                         <notebook>
                             <page string="Rent Request">
-                                <field name="all_request_ids"/>
+                                <field name="all_request_ids" create="false" delete="false" readonly="1"/>
                             </page>
                             <page string="Rent Charges">
                                 <field name="rent_charges_ids">
@@ -139,6 +139,12 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                         <field name="message_follower_ids" widget="mail_followers"/>
+                         <field name="activity_ids" widget="mail_activity"/>
+                         <field name="message_ids" widget="mail_thread"/>
+
+                    </div>
                 </form>
             </field>
         </record>

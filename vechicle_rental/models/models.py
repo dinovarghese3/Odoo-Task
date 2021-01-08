@@ -6,8 +6,8 @@ from odoo.tools.safe_eval import datetime
 
 class VehicleRental(models.Model):
     _name = 'vehicle.rental'
-    _description = "Class contain all Vehicle details"
-
+    _description = "Vehicle for rental"
+    _inherit = ['mail.thread','mail.activity.mixin']
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle',
                                  domain=[('state_id', '=', 3)])
     name = fields.Char(string='Name',
@@ -24,13 +24,15 @@ class VehicleRental(models.Model):
                                   default=lambda
                                       self: self.env.user.company_id.currency_id)
 
-    rent = fields.Monetary(string='Rent')
+    rent = fields.Monetary(string='Rent', track_visibility='onchange')
     state = fields.Selection(
-        [('available', 'Available'), ('notavailable', 'Not available'),
+        [('available', 'Available'), ('not_available', 'Not available'),
          ('sold', 'Sold')],
-        string='State', default='available')
+        string='State', default='available', track_visibility='onchange')
     all_request_ids = fields.One2many('vehicle.request', 'vehicle_id',
-                                      string='All Requests')
+                                      string='All Requests',
+                                      domain=lambda self: [
+                                          ('state', '!=', 'draft')])
     rent_charges_ids = fields.One2many('rent.charges', 'vehicle_id')
 
     def all_rental_requests(self):
@@ -64,6 +66,7 @@ class RentCharges(models.Model):
     _description = 'Amount calculation based on date'
     _rec_name = 'time'
     vehicle_id = fields.Many2one('vehicle.rental', string="vehicle")
+
     currency_id = fields.Many2one('res.currency', string='Currency',
                                   default=lambda
                                       self: self.env.user.company_id.currency_id)
@@ -73,10 +76,10 @@ class RentCharges(models.Model):
 
     @api.constrains('time')
     def _constrains_time(self):
-        result=self.vehicle_id.rent_charges_ids - self
-        for rec in result:
-            if rec.time == self.time:
-                raise ValidationError("You cannot select same time")
+        for rec in self.filtered(
+                lambda l: l.vehicle_id.rent_charges_ids - self and (
+                        l.time == self.time)):
+            raise ValidationError(" Cannot select same type ")
 
 
 class RegisterDate(models.Model):
