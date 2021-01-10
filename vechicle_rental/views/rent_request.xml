@@ -63,9 +63,10 @@
                                         <field name="rent" widget="monetary"
                                                options="
                                          {'currency_field': 'currency_id'}"/>
+                                        <field name="late" invisible="True"/>
                                     </div>
                                     <div>
-                                        <field name="state"/>
+                                        <field name="state" invisible="True"/>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +81,9 @@
             <field name="name">vehicle.request.tree</field>
             <field name="model">vehicle.request</field>
             <field name="arch" type="xml">
-                <tree string="Rental">
+                <tree decoration-danger="late == True" decoration-warning=" warning == True" sample="1" >
+                    <field name="late" invisible="True"/>
+                    <field name="warning" invisible="True"/>
                     <field name="sequence"/>
                     <field name="customer_id"/>
                     <field name="vehicle_id"/>
@@ -93,6 +96,7 @@
                     <field name="period"/>
                     <field name="amount"/>
                     <field name="state"/>
+
                 </tree>
             </field>
         </record>
@@ -109,6 +113,8 @@
                                 states="draft"/>
                         <button name="button_return" string="Return"
                                 class="oe_highlight" type="object"
+                                states="confirm"/>
+                        <button name="button_create_invoice" string="Create Invoice"
                                 states="confirm"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirm,return"/>
@@ -150,6 +156,9 @@
                                            style="max-width: 50%"/>
                                 </div>
                                 <field name="amount"/>
+                                <field name="late"/>
+                                <field name="warning"/>
+
                             </group>
                         </group>
                     </sheet>

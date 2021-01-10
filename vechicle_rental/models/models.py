@@ -7,7 +7,7 @@ from odoo.tools.safe_eval import datetime
 class VehicleRental(models.Model):
     _name = 'vehicle.rental'
     _description = "Vehicle for rental"
-    _inherit = ['mail.thread','mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle',
                                  domain=[('state_id', '=', 3)])
     name = fields.Char(string='Name',

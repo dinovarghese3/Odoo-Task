@@ -25,6 +25,7 @@ class RentRequest(models.Model):
     period = fields.Integer(string="Period")
     state = fields.Selection(
         [('draft', 'Draft'), ('confirm', 'Confirm'),
+         ('Invoiced_to_Request', 'Invoiced to Request'),
          ('return', 'Return')],
         string='State', default='draft', track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string='Currency',
@@ -38,15 +39,36 @@ class RentRequest(models.Model):
     amount = fields.Monetary(string="Amount", store=True,
                              compute='compute_amount_period_type',
                              track_visibility='onchange')
+    warning = fields.Boolean(default=False, compute='_compute_warning')
+    late = fields.Boolean(default=False, compute='_compute_late')
+
+    @api.model
+    def _set_boolean(self):
+        print("hai boolean")
+
+    def _compute_warning(self):
+        " Warning boolean set befor 2 days "
+        for rec in self:
+            rec.warning = rec.state == 'confirm' and rec.to_date and (
+                (rec.to_date - fields.Date.today()).days) <= 2
+
+    def _compute_late(self):
+        "Late boolean field set after the date "
+        for rec in self:
+            rec.late = rec.state == 'confirm' and rec.to_date and rec.to_date < fields.Date.today()
+            if rec.late:
+                rec.warning = False
 
     @api.onchange('vehicle_id')
     def _onchange_period_type(self):
+        " Period type getting from rent vehicle module "
         for rec in self:
             return {'domain': {
                 'period_type': [('vehicle_id', '=', rec.vehicle_id.id)]}}
 
     @api.depends('number_of_period', 'period_type')
     def compute_amount_period_type(self):
+        " Compute amount based on period type and rent"
         # print(self.vehicle_id)
         # print(self.vehicle_id.rent_charges_ids)
         self.write(
@@ -67,13 +89,16 @@ class RentRequest(models.Model):
             rec.write({'state': 'return'})
             rec.vehicle_id.write({'state': 'available'})
 
+    def button_create_invoice(self):
+        print("Create invoice")
+
     @api.model
     def create(self, vals):
         """ Function to create sequence """
         if vals.get('sequence', 'New') == 'New':
             vals['sequence'] = self.env['ir.sequence'].next_by_code(
                 'vehicle.request.sequence') or 'New'
-                        # super(RentRequest, self) same
+            # super(RentRequest, self) same
         return super().create(vals)
 
     @api.onchange('from_date', 'to_date')

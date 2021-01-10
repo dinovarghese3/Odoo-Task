@@ -23,7 +23,6 @@
                             domain="[('state', '=','available')]"/>
                     <filter name="filter_by_notavailable" string="Not Available"
                             domain="[('state', '=','not_available')]"/>
-
                 </search>
             </field>
         </record>
@@ -40,8 +39,7 @@
                             oe_kanban_global_click">
                                 <div class="o_kanban_content">
                                     <strong>
-                                        <div class=
-                                                     "oe_kanban_project_list
+                                        <div class="oe_kanban_project_list
                                                      o_kanban_record_subtitle">
                                             <field name="name"/>
                                         </div>
@@ -73,7 +71,8 @@
             <field name="name">vehicle.rental.tree</field>
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
-                <tree string="Rental">
+                <tree string="Rental" >
+
                     <field name="name"/>
                     <field name="vehicle_id"/>
                     <field name="brand_id"/>
@@ -117,19 +116,22 @@
                                 <field name="currency_id" invisible="True"/>
                                 <field name="rent" widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
+
                             </group>
                         </group>
                         <!--                        pages-->
                         <notebook>
                             <page string="Rent Request">
-                                <field name="all_request_ids" create="false" delete="false" readonly="1"/>
+                                <field name="all_request_ids" create="false"
+                                       delete="false" readonly="1"/>
                             </page>
                             <page string="Rent Charges">
                                 <field name="rent_charges_ids">
                                     <tree editable="Top" create="1"
                                           multi_edit="1">
                                         <field name="time" style="width:100px"/>
-                                        <field name="amount" style="width:100px"/>
+                                        <field name="amount"
+                                               style="width:100px"/>
                                         <field name="vehicle_id"
                                                invisible='True'/>
                                         <field name="currency_id"
@@ -140,9 +142,10 @@
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
-                         <field name="message_follower_ids" widget="mail_followers"/>
-                         <field name="activity_ids" widget="mail_activity"/>
-                         <field name="message_ids" widget="mail_thread"/>
+                        <field name="message_follower_ids"
+                               widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
 
                     </div>
                 </form>

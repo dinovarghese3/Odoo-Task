@@ -28,9 +28,7 @@
         'views/registration_date_fleet.xml',
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+
     'installable': True,
     'application': True,
     'auto_install': False,
