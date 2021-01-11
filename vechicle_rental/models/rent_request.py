@@ -25,7 +25,7 @@ class RentRequest(models.Model):
     period = fields.Integer(string="Period")
     state = fields.Selection(
         [('draft', 'Draft'), ('confirm', 'Confirm'),
-         ('Invoiced_to_Request', 'Invoiced to Request'),
+         ('invoiced', 'Invoiced'),
          ('return', 'Return')],
         string='State', default='draft', track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string='Currency',
@@ -55,7 +55,8 @@ class RentRequest(models.Model):
     def _compute_late(self):
         "Late boolean field set after the date "
         for rec in self:
-            rec.late = rec.state == 'confirm' and rec.to_date and rec.to_date < fields.Date.today()
+            rec.late = rec.state == 'confirm' and rec.to_date and \
+                       rec.to_date < fields.Date.today()
             if rec.late:
                 rec.warning = False
 
@@ -91,6 +92,8 @@ class RentRequest(models.Model):
 
     def button_create_invoice(self):
         print("Create invoice")
+        for rec in self:
+            rec.write({'state': 'invoiced'})
 
     @api.model
     def create(self, vals):

@@ -81,7 +81,8 @@
             <field name="name">vehicle.request.tree</field>
             <field name="model">vehicle.request</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="late == True" decoration-warning=" warning == True" sample="1" >
+                <tree decoration-danger="late == True" decoration-warning="
+                 warning == True" sample="1">
                     <field name="late" invisible="True"/>
                     <field name="warning" invisible="True"/>
                     <field name="sequence"/>
@@ -113,11 +114,13 @@
                                 states="draft"/>
                         <button name="button_return" string="Return"
                                 class="oe_highlight" type="object"
-                                states="confirm"/>
-                        <button name="button_create_invoice" string="Create Invoice"
-                                states="confirm"/>
+                                states="invoiced"/>
+                        <button name="button_create_invoice" type="object"
+                                states="confirm" string="Create Invoice"/>
+                        <!--                        <button name="294" string="Create Invoice" type="action" class="btn-primary" states="confirm" />-->
+                        <!--                        <button name="294" string="Create Invoice" type="action" context="{'default_advance_payment_method': 'percentage'}" attrs="{'invisible': ['|',('state', '!=', 'confirm'),]}"/>-->
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirm,return"/>
+                               statusbar_visible="draft,confirm,invoiced,return"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -156,8 +159,8 @@
                                            style="max-width: 50%"/>
                                 </div>
                                 <field name="amount"/>
-                                <field name="late"/>
-                                <field name="warning"/>
+                                <field name="late" invisible="True"/>
+                                <field name="warning" invisible="True"/>
 
                             </group>
                         </group>
