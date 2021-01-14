@@ -15,11 +15,13 @@
     'version': '14.0.1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'fleet'],
-
+    'depends': ['base', 'fleet','account'],
+    'demo':['demo/demo.xml'],
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
+        'data/product_demo.xml',
         'views/views.xml',
         'views/templates.xml',
         'data/sequence.xml',

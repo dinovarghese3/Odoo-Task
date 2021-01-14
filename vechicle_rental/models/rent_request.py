@@ -9,18 +9,19 @@ class RentRequest(models.Model):
     _description = "Rent requests"
     _rec_name = 'sequence'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    sequence = fields.Char(string="Request Number", readonly=True,
+
+    sequence = fields.Char(string="Number", readonly=True,
                            required=True, copy=False, index=True,
                            default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', String="Customer",
-                                  required=True)
+                                  required=True ,track_visibility='always')
     request_date = fields.Date(string="Request Date",
                                default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
-                                 track_visibility='onchange',
+                                 track_visibility='always',
                                  domain=[('state', '=', 'available')],
-                                 required=True, force_create=False)
-    from_date = fields.Date(string="From Date", track_visibility='onchange')
+                                 required=True, force_create=False,)
+    from_date = fields.Date(string="From Date", track_visibility='always')
     to_date = fields.Date(string="To Date", track_visibility='always')
     period = fields.Integer(string="Period")
     state = fields.Selection(
@@ -33,18 +34,20 @@ class RentRequest(models.Model):
                                       self: self.env.user.company_id.currency_id)
     rent = fields.Monetary(string="Rent", related='period_type.amount')
 
-    number_of_period = fields.Integer(string="Period", default=1)
+    number_of_period = fields.Float(string="Period", default=1)
     period_type = fields.Many2one('rent.charges', string="type",
-                                  track_visibility='onchange')
+                                  track_visibility='always')
     amount = fields.Monetary(string="Amount", store=True,
                              compute='compute_amount_period_type',
                              track_visibility='onchange')
     warning = fields.Boolean(default=False, compute='_compute_warning')
     late = fields.Boolean(default=False, compute='_compute_late')
+    invoice_id = fields.Many2one('account.move')
+    is_paid = fields.Boolean(compute='_compute_is_paid')
 
     @api.model
-    def _set_boolean(self):
-        print("hai boolean")
+    def _default_rent(self):
+        return self.env['product.template'].search([('name', '=', 'Rent')], ).id
 
     def _compute_warning(self):
         " Warning boolean set befor 2 days "
@@ -86,14 +89,60 @@ class RentRequest(models.Model):
 
     def button_return(self):
         """Button return"""
+        # print(self.payment_state)
         for rec in self:
             rec.write({'state': 'return'})
             rec.vehicle_id.write({'state': 'available'})
 
     def button_create_invoice(self):
-        print("Create invoice")
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'date': fields.Date.today(),
+            # 'fro_date':self.to_date,
+            'l10n_in_gst_treatment': self.customer_id.l10n_in_gst_treatment,
+            'invoice_date': fields.Date.today(),
+            'partner_id': self.customer_id.id,
+            'currency_id': self.currency_id.id,
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.env['product.product'].search(
+                    [('name', '=', 'Rent')], ),
+                'name': self.vehicle_id.name,
+                'price_unit': self.amount})],
+        })
+        # print(invoice.payment_state)
+        invoice.action_post()
+        self.invoice_id = invoice.id
         for rec in self:
             rec.write({'state': 'invoiced'})
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': invoice.id,
+            'context': "{'create': False}",}
+
+    # def _is_payed(self):
+    #
+    #         print(self.invoice_id.payment_state)
+
+    def _compute_is_paid(self):
+        for rec in self:
+            rec.is_paid = rec.invoice_id.payment_state == 'paid'
+            print(rec.invoice_id.payment_state)
+
+    def button_invoices_all(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_id': self.invoice_id.id,
+            'context': "{'create': False}",
+
+            # 'res_id': invoice.id,
+        }
 
     @api.model
     def create(self, vals):
