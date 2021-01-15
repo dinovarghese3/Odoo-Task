@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from odoo.cli.scaffold import env
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import datetime
 
@@ -77,11 +76,7 @@ class RentCharges(models.Model):
 
     @api.constrains('time')
     def _constrains_time(self):
-        # existing_product = env['rent.charges'].search(
-        #     [('vehicle_id.rent_charges_ids.time', '=', self.time)])
-        # if not existing_product:
-        #     raise Warning(
-        #         "You can't have the same Internal Reference Number in Odoo twice!")
+        #  checking the time is repeated
         for rec in self.vehicle_id.rent_charges_ids - self:
             # print(rec.time)
             if rec.time == self.time:
@@ -99,8 +94,3 @@ class RegisterDate(models.Model):
     registration_date = fields.Date('Registration Date ', required=False,
                                     help='Date when the vehicle has been '
                                          'Register')
-
-class InvoiceCreate(models.Model):
-    _inherit = 'account.move'
-    _description = "Adding new field in invoice and remove unwanted fields"
-    # fro_date = fields.Date('From', store=True)

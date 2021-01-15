@@ -1,4 +1,3 @@
-from unittest import result
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -14,13 +13,13 @@ class RentRequest(models.Model):
                            required=True, copy=False, index=True,
                            default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', String="Customer",
-                                  required=True ,track_visibility='always')
+                                  required=True, track_visibility='always')
     request_date = fields.Date(string="Request Date",
                                default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
                                  track_visibility='always',
                                  domain=[('state', '=', 'available')],
-                                 required=True, force_create=False,)
+                                 required=True, force_create=False, )
     from_date = fields.Date(string="From Date", track_visibility='always')
     to_date = fields.Date(string="To Date", track_visibility='always')
     period = fields.Integer(string="Period")
@@ -47,6 +46,7 @@ class RentRequest(models.Model):
 
     @api.model
     def _default_rent(self):
+        # getting the service product  rent form product.product
         return self.env['product.template'].search([('name', '=', 'Rent')], ).id
 
     def _compute_warning(self):
@@ -73,35 +73,30 @@ class RentRequest(models.Model):
     @api.depends('number_of_period', 'period_type')
     def compute_amount_period_type(self):
         " Compute amount based on period type and rent"
-        # print(self.vehicle_id)
-        # print(self.vehicle_id.rent_charges_ids)
         self.write(
             {'amount': self.period_type.amount * self.number_of_period})
 
     def button_confirm(self):
-        """ Button confirm """
+        """ Button confirm state """
         for rec in self:
             rec.write({'state': 'confirm'})
             rec.vehicle_id.write({'state': 'not_available'})
-            # print(rec.vehicle_id.all_request_ids)
-            # return {'domain': {'all_request_ids': self.id}}
-            # return dict(domain={'check_id': self.id})
 
     def button_return(self):
-        """Button return"""
+        """Button return state"""
         # print(self.payment_state)
         for rec in self:
             rec.write({'state': 'return'})
             rec.vehicle_id.write({'state': 'available'})
 
     def button_create_invoice(self):
-
+        # creating invoice
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'date': fields.Date.today(),
             # 'fro_date':self.to_date,
             'l10n_in_gst_treatment': self.customer_id.l10n_in_gst_treatment,
-            'invoice_date': fields.Date.today(),
+            'invoice_date': self.to_date,
             'partner_id': self.customer_id.id,
             'currency_id': self.currency_id.id,
             'invoice_line_ids': [(0, 0, {
@@ -110,7 +105,6 @@ class RentRequest(models.Model):
                 'name': self.vehicle_id.name,
                 'price_unit': self.amount})],
         })
-        # print(invoice.payment_state)
         invoice.action_post()
         self.invoice_id = invoice.id
         for rec in self:
@@ -121,27 +115,23 @@ class RentRequest(models.Model):
             'view_type': 'form',
             'view_mode': 'form',
             'res_id': invoice.id,
-            'context': "{'create': False}",}
-
-    # def _is_payed(self):
-    #
-    #         print(self.invoice_id.payment_state)
+            'context': "{'create': False,'edit': False}", }
 
     def _compute_is_paid(self):
+        # Checking the invoice is paid or not
         for rec in self:
             rec.is_paid = rec.invoice_id.payment_state == 'paid'
-            print(rec.invoice_id.payment_state)
+            # print(rec.invoice_id.payment_state)
 
     def button_invoices_all(self):
+        # To View the invoice
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
             'view_type': 'form',
             'view_mode': 'form',
             'res_id': self.invoice_id.id,
-            'context': "{'create': False}",
-
-            # 'res_id': invoice.id,
+            'context': "{'create': False, 'edit':False}",
         }
 
     @api.model

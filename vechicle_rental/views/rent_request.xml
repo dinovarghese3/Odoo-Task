@@ -8,6 +8,10 @@
             <field name="arch" type="xml">
                 <search string="Rent request search">
                     <!--                    search-->
+                    <field string="Vehicle" name="vehicle_id"
+                           filter_domain="['|',('vehicle_id', 'ilike', self),
+                           ('customer_id', 'ilike', self)]"/>
+                    <field string="Customer" name="customer_id"/>
 
                     <!--                    Group by-->
                     <group expand="1" string="Group by customer">
@@ -122,7 +126,7 @@
                         <!--                        <button name="294" string="Create Invoice" type="action" class="btn-primary" states="confirm" />-->
                         <!--                        <button name="294" string="Create Invoice" type="action" context="{'default_advance_payment_method': 'percentage'}" attrs="{'invisible': ['|',('state', '!=', 'confirm'),]}"/>-->
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirm,invoiced,return"/>
+                               statusbar_visible="confirm,invoiced"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
