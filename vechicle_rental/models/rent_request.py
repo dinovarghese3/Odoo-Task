@@ -19,7 +19,7 @@ class RentRequest(models.Model):
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
                                  track_visibility='always',
                                  domain=[('state', '=', 'available')],
-                                 required=True, force_create=False, )
+                                 required=True, force_create=False,store=True )
     from_date = fields.Date(string="From Date", track_visibility='always')
     to_date = fields.Date(string="To Date", track_visibility='always')
     period = fields.Integer(string="Period")
@@ -78,16 +78,14 @@ class RentRequest(models.Model):
 
     def button_confirm(self):
         """ Button confirm state """
-        for rec in self:
-            rec.write({'state': 'confirm'})
-            rec.vehicle_id.write({'state': 'not_available'})
+        self.write({'state': 'confirm'})
+        self.vehicle_id.write({'state': 'not_available'})
 
     def button_return(self):
         """Button return state"""
         # print(self.payment_state)
-        for rec in self:
-            rec.write({'state': 'return'})
-            rec.vehicle_id.write({'state': 'available'})
+        self.write({'state': 'return'})
+        self.vehicle_id.write({'state': 'available'})
 
     def button_create_invoice(self):
         # creating invoice
@@ -157,3 +155,8 @@ class RentRequest(models.Model):
                         l.from_date > l.to_date)):
             raise ValidationError(
                 _('Sorry, To Date Must be greater Than From Date...'))
+
+    # _sql_constraints = [
+    #     ('unique_time', 'unique(self.time)', 'Vehicle is already exists!'),
+    #
+    # ]

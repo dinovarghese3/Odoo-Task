@@ -14,7 +14,8 @@ class VehicleRental(models.Model):
                        related='vehicle_id.name',
                        store=True)
     brand_id = fields.Many2one(string='Brand',
-                               related='vehicle_id.brand_id', store=True)
+                               related='vehicle_id.brand_id', store=True,
+                               )
     registration_date = fields.Date('Registration Date ', required=False,
                                     help='Date the vehicle has Register',
                                     readonly=True,
@@ -35,6 +36,17 @@ class VehicleRental(models.Model):
                                           ('state', '!=', 'draft')])
     rent_charges_ids = fields.One2many('rent.charges', 'vehicle_id')
 
+    @api.constrains('rent_charges_ids')
+    def _constrains_time(self):
+        """ Checking the time is already exist"""
+        for rec in self:
+            rent_check = []
+            for t in rec.rent_charges_ids:
+                if t.time in rent_check:
+                    raise ValidationError(
+                        " Cannot select same type " + t.time)
+                rent_check.append(t.time)
+
     def all_rental_requests(self):
         """ Function for Smart button to return the car requests"""
         return {
@@ -49,8 +61,7 @@ class VehicleRental(models.Model):
     @api.onchange('registration_date')
     def _onchange_registration_date(self):
         """ Calculating Year from registration date """
-        # print('contry', self.env.user.company_id.id)
-        # print(self.registration_date)
+
         if self.registration_date:
             self.model = str((datetime.datetime.strptime(
                 str(self.registration_date), "%Y-%m-%d")).year)
@@ -73,19 +84,6 @@ class RentCharges(models.Model):
     amount = fields.Monetary(string='Amount')
     time = fields.Selection([('hour', 'Hour'), ('day', 'Day'), ('week', 'Week'),
                              ('month', 'Month')], string="Time", default='day')
-
-    @api.constrains('time')
-    def _constrains_time(self):
-        #  checking the time is repeated
-        for rec in self.vehicle_id.rent_charges_ids - self:
-            # print(rec.time)
-            if rec.time == self.time:
-                print(self.time, rec.time)
-                raise ValidationError(" Cannot select same type " + self.time)
-        # for rec in self.filtered(
-        #         lambda l: l.vehicle_id.rent_charges_ids - self and (
-        #                 l.time == self.time)):
-        #     raise ValidationError(" Cannot select same type ")
 
 
 class RegisterDate(models.Model):

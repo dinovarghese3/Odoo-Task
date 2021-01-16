@@ -27,7 +27,7 @@
             </field>
         </record>
         <!--  Sequence menus that the listed order -->
-        <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1" web_icon="vehicle rental,/static/description"/>
+        <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1" />
         <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
                   action="vechicle_rental.action_window"/>
         <menuitem id="request" name="Rent Request" parent="vehicle_home"

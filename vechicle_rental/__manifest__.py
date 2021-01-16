@@ -16,7 +16,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'fleet','account'],
-    'demo':['demo/demo.xml'],
+    'images': ['static/description/icon.png'],
     # always loaded
     'data': [
         'security/security.xml',
