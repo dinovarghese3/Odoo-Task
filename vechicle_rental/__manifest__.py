@@ -15,7 +15,7 @@
     'version': '14.0.1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'fleet','account'],
+    'depends': ['base', 'fleet', 'account', 'mail'],
     'images': ['static/description/icon.png'],
     # always loaded
     'data': [
@@ -23,7 +23,6 @@
         'security/ir.model.access.csv',
         'data/product_demo.xml',
         'views/views.xml',
-        'views/templates.xml',
         'data/sequence.xml',
         'views/rent_request.xml',
         'views/rent_vehicle.xml',

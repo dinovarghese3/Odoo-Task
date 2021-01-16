@@ -71,7 +71,7 @@
             <field name="name">vehicle.rental.tree</field>
             <field name="model">vehicle.rental</field>
             <field name="arch" type="xml">
-                <tree string="Rental" >
+                <tree string="Rental">
 
                     <field name="name"/>
                     <field name="vehicle_id"/>

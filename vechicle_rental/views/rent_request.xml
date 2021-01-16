@@ -123,8 +123,7 @@
                         <button name="button_create_invoice" type="object"
                                 class="oe_highlight"
                                 states="confirm" string="Create Invoice"/>
-                        <!--                        <button name="294" string="Create Invoice" type="action" class="btn-primary" states="confirm" />-->
-                        <!--                        <button name="294" string="Create Invoice" type="action" context="{'default_advance_payment_method': 'percentage'}" attrs="{'invisible': ['|',('state', '!=', 'confirm'),]}"/>-->
+
                         <field name="state" widget="statusbar"
                                statusbar_visible="confirm,invoiced"/>
                     </header>

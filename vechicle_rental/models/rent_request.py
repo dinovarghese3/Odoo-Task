@@ -1,4 +1,3 @@
-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
@@ -19,7 +18,7 @@ class RentRequest(models.Model):
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
                                  track_visibility='always',
                                  domain=[('state', '=', 'available')],
-                                 required=True, force_create=False,store=True )
+                                 required=True, force_create=False, store=True)
     from_date = fields.Date(string="From Date", track_visibility='always')
     to_date = fields.Date(string="To Date", track_visibility='always')
     period = fields.Integer(string="Period")
@@ -44,19 +43,14 @@ class RentRequest(models.Model):
     invoice_id = fields.Many2one('account.move')
     is_paid = fields.Boolean(compute='_compute_is_paid')
 
-    @api.model
-    def _default_rent(self):
-        # getting the service product  rent form product.product
-        return self.env['product.template'].search([('name', '=', 'Rent')], ).id
-
     def _compute_warning(self):
-        " Warning boolean set befor 2 days "
+        """ Warning boolean set befor 2 days """
         for rec in self:
             rec.warning = rec.state == 'confirm' and rec.to_date and (
                 (rec.to_date - fields.Date.today()).days) <= 2
 
     def _compute_late(self):
-        "Late boolean field set after the date "
+        """Late boolean field set after the date """
         for rec in self:
             rec.late = rec.state == 'confirm' and rec.to_date and \
                        rec.to_date < fields.Date.today()
@@ -65,14 +59,14 @@ class RentRequest(models.Model):
 
     @api.onchange('vehicle_id')
     def _onchange_period_type(self):
-        " Period type getting from rent vehicle module "
+        """ Period type getting from rent vehicle module """
         for rec in self:
             return {'domain': {
                 'period_type': [('vehicle_id', '=', rec.vehicle_id.id)]}}
 
     @api.depends('number_of_period', 'period_type')
     def compute_amount_period_type(self):
-        " Compute amount based on period type and rent"
+        """ Compute amount based on period type and rent"""
         self.write(
             {'amount': self.period_type.amount * self.number_of_period})
 
@@ -83,16 +77,14 @@ class RentRequest(models.Model):
 
     def button_return(self):
         """Button return state"""
-        # print(self.payment_state)
         self.write({'state': 'return'})
         self.vehicle_id.write({'state': 'available'})
 
     def button_create_invoice(self):
-        # creating invoice
+        """ creating invoice """
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'date': fields.Date.today(),
-            # 'fro_date':self.to_date,
             'l10n_in_gst_treatment': self.customer_id.l10n_in_gst_treatment,
             'invoice_date': self.to_date,
             'partner_id': self.customer_id.id,
@@ -116,13 +108,12 @@ class RentRequest(models.Model):
             'context': "{'create': False,'edit': False}", }
 
     def _compute_is_paid(self):
-        # Checking the invoice is paid or not
+        """ Checking the invoice is paid or not"""
         for rec in self:
             rec.is_paid = rec.invoice_id.payment_state == 'paid'
-            # print(rec.invoice_id.payment_state)
 
     def button_invoices_all(self):
-        # To View the invoice
+        """ To View the invoice"""
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
@@ -138,7 +129,6 @@ class RentRequest(models.Model):
         if vals.get('sequence', 'New') == 'New':
             vals['sequence'] = self.env['ir.sequence'].next_by_code(
                 'vehicle.request.sequence') or 'New'
-            # super(RentRequest, self) same
         return super().create(vals)
 
     @api.onchange('from_date', 'to_date')
@@ -156,7 +146,3 @@ class RentRequest(models.Model):
             raise ValidationError(
                 _('Sorry, To Date Must be greater Than From Date...'))
 
-    # _sql_constraints = [
-    #     ('unique_time', 'unique(self.time)', 'Vehicle is already exists!'),
-    #
-    # ]
