@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="vehicle_rent_report" model="ir.ui.view">
+            <field name="name">vehicle.rent.report</field>
+            <field name="model">vehicle.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+<!--                                <field name="sequence_id"/>-->
+                                <field name="vehicle_id"/>
+                                <field name="from_date"/>
+                            </group>
+                            <group>
+<!--                                <field name="customer_id"/>-->
+                                <field name="to_date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Print" name="view_report_pdf"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="Discard" class="btn-secondary"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

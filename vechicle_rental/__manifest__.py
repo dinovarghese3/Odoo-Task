@@ -25,8 +25,13 @@
         'views/views.xml',
         'data/sequence.xml',
         'views/rent_request.xml',
+        'wizards/vehicle_rent_report.xml',
         'views/rent_vehicle.xml',
         'views/registration_date_fleet.xml',
+        'reports/vehicle_report.xml',
+
+        'reports/vehicle_rent_report_template.xml',
+
     ],
     # only loaded in demonstration mode
 

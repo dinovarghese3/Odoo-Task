@@ -12,7 +12,7 @@ class RentRequest(models.Model):
                            required=True, copy=False, index=True,
                            default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', String="Customer",
-                                  required=True, track_visibility='always')
+                                  required=True, track_visibility='always',store=True)
     request_date = fields.Date(string="Request Date",
                                default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",

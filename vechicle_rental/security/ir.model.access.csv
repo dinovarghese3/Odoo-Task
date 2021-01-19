@@ -7,4 +7,4 @@ access_rent_charge,access.vechile.rent.charge,model_rent_charges,group_vehicle_r
 access_vechile_manager,access.vechile.manager,model_vehicle_rental,group_vehicle_rental_manager,1,1,1,1
 access_request_rent_manager,access.vechile.user.manager,model_vehicle_request,group_vehicle_rental_manager,1,1,1,1
 access_rent_charge_manager,access.vechile.rent.charge_manager,model_rent_charges,group_vehicle_rental_manager,1,1,1,1
-
+access_rent_report_manager,access.rent.report.manager,model_vehicle_report,group_vehicle_rental_manager,1,1,1,1

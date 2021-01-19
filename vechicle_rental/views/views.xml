@@ -26,11 +26,32 @@
                 </p>
             </field>
         </record>
+        <!--        action for Report menu-->
+        <!--        Vehicle Rent Report menu-->
+        <record id="create_vehicle_rent_report" model="ir.actions.act_window">
+            <field name="name">Vehicle Rental Report</field>
+            <field name="res_model">vehicle.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="vehicle_rent_report"/>
+            <field name="target">new</field>
+        </record>
+
         <!--  Sequence menus that the listed order -->
-        <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1" />
+<!--        main menu-->
+        <menuitem id="vehicle_home" name="Vehicle Rental" sequence="1"/>
+<!--        App menus -->
+<!--        Rent Vehicle menu-->
         <menuitem id="vehicle" name="Rent Vehicles" parent="vehicle_home"
-                  action="vechicle_rental.action_window"/>
+                  action="vechicle_rental.action_window" sequence="1"/>
+<!--    Rent Request menu-->
         <menuitem id="request" name="Rent Request" parent="vehicle_home"
-                  action="vehicle_request"/>
+                  action="vehicle_request" sequence="2"/>
+<!--        Report menu-->
+        <menuitem id="vehicle_report" name="Reports" parent="vehicle_home"
+                  sequence="3"/>
+<!--        Vehicle Rent Report Sub menu-->
+        <menuitem id="vehicle_rental_report" name="Vehicle Rental Report"
+                  parent="vehicle_report"
+                  action="create_vehicle_rent_report" sequence="1"/>
     </data>
 </odoo>
