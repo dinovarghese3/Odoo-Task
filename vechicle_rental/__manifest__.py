@@ -19,18 +19,18 @@
     'images': ['static/description/icon.png'],
     # always loaded
     'data': [
+
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/product_demo.xml',
         'views/views.xml',
         'data/sequence.xml',
         'views/rent_request.xml',
-        'wizards/vehicle_rent_report.xml',
         'views/rent_vehicle.xml',
         'views/registration_date_fleet.xml',
-        'reports/vehicle_report.xml',
-
-        'reports/vehicle_rent_report_template.xml',
+        'report/vehicle_report.xml',
+        'wizards/vehicle_rent_report.xml',
+        'report/vehicle_rent_report_template.xml',
 
     ],
     # only loaded in demonstration mode

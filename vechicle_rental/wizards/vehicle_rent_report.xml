@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <record id="vehicle_rent_report" model="ir.ui.view">
-            <field name="name">vehicle.rent.report</field>
-            <field name="model">vehicle.report</field>
+            <field name="name">vehicle rent report</field>
+            <field name="model">report.vechicle_rental.report</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>

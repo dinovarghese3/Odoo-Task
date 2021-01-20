@@ -1,1 +1,1 @@
-from . import vehicle_rent_report
+from . import vehicle_rent_report_wizrd
