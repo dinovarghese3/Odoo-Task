@@ -23,14 +23,15 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/product_demo.xml',
+        'wizards/vehicle_rent_report.xml',
         'views/views.xml',
         'data/sequence.xml',
         'views/rent_request.xml',
         'views/rent_vehicle.xml',
         'views/registration_date_fleet.xml',
         'report/vehicle_report.xml',
-        'wizards/vehicle_rent_report.xml',
         'report/vehicle_rent_report_template.xml',
+
 
     ],
     # only loaded in demonstration mode

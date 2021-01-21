@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record id="vehicle_rent_report" model="ir.ui.view">
+        <record id="wizard_rent" model="ir.ui.view">
             <field name="name">vehicle rent report</field>
-            <field name="model">report.vechicle_rental.report</field>
+            <field name="model">report.vechicle_rental.rental_report</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
@@ -28,6 +28,13 @@
                     </footer>
                 </form>
             </field>
+        </record>
+        <record id="rent_report" model="ir.actions.act_window">
+            <field name="name">Vehicle Rental Report</field>
+            <field name="res_model">report.vechicle_rental.rental_report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_rent"/>
+            <field name="target">new</field>
         </record>
     </data>
 </odoo>

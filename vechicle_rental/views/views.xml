@@ -28,13 +28,7 @@
         </record>
         <!--        action for Report menu-->
         <!--        Vehicle Rent Report menu-->
-        <record id="create_rent_report" model="ir.actions.act_window">
-            <field name="name">Vehicle Rental Report</field>
-            <field name="res_model">report.vechicle_rental.report_vehicle_rent</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="vehicle_rent_report"/>
-            <field name="target">new</field>
-        </record>
+
 
         <!--  Sequence menus that the listed order -->
 <!--        main menu-->
@@ -52,6 +46,6 @@
 <!--        Vehicle Rent Report Sub menu-->
         <menuitem id="menu_vehicle_rental_report" name="Vehicle Rental Report"
                   parent="vehicle_report"
-                  action="create_rent_report" sequence="1"/>
+                  action="rent_report" sequence="1"/>
     </data>
 </odoo>

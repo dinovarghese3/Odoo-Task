@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <template id="report_vehicle_rent" >
+    <template id="rental_report">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <h2 align="center">Vehicle Rental</h2>
                 <div class="page">
                     <div class="oe_structure"/>
                     <div class="row">
-
-
+                        <span t-esc="vehicle_id" />
+                        <span t-esc="from_date" />
+                        <span t-esc="to_date" />
                         <table class="table table-condensed">
                             <head>
                                 <tr>
-                                    <th style="text-align:left;"><strong>Vehicle:</strong></th>
-                                    <th style="text-align:left;"><strong>From Date:</strong></th>
-                                    <th style="text-align:left;"><strong>To Date:</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        Serial No:</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        Customer:</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        Model</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        From Date:
+                                    </strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        To Date:</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        State</strong></th>
                                 </tr>
                             </head>
                             <body>
-                                <t t-foreach="docs" t-as="o">
+                                <t t-foreach="docs" t-as="data">
                                     <tr>
                                         <td style="text-align:left;">
-                                            <t t-esc="o['vehicle_id']"/>
+                                            <t t-esc="data_index+1"/>
                                         </td>
                                         <td style="text-align:left;">
-                                            <t t-esc="o['from_date']"/>
+                                            <t t-esc="data['customer_id']"/>
                                         </td>
                                         <td style="text-align:left;">
-                                            <t t-esc="o['to_date']"/>
+                                            <t t-esc="data['model']"/>
+                                        </td>
+
+                                        <td style="text-align:left;">
+                                            <t t-esc="data['from_date']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="data['to_date']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="data['state']"/>
                                         </td>
                                     </tr>
                                 </t>

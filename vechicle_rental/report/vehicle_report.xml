@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <report id ="report_vehicle_rental"
-            string="Vehicle Rend Report"
-            model="vehicle.request"
-            report_type="qweb-pdf"
-            name="vechicle_rental.report"
-            file ="vehicle_rental.report_vehicle_rent" />
+<!--    <report id ="report_vehicle_rental"-->
+<!--            string="Vehicle Rend Report"-->
+<!--            model="vehicle.request"-->
+<!--            report_type="qweb-pdf"-->
+<!--            name="vechicle_rental.rental_report"-->
+<!--            file ="vehicle_rental.report.print"-->
+<!--            menu="False"-->
+<!--    />-->
 
-<!--    <record id="report_vehicle_rental" model="ir.actions.report">-->
-<!--            <field name="name">Vehicle Rent Report</field>-->
-<!--            <field name="model">vehicle.report</field>-->
-<!--            <field name="report_type">qweb-pdf</field>-->
-<!--&lt;!&ndash;            <field name="report_name">vechicle_rental.report_vehicle_rent</field>&ndash;&gt;-->
-<!--            <field name="report_file">vechicle_rental.report_vehicle_rent</field>-->
-<!--            <field name="attachment_use">False</field>-->
-<!--        </record>-->
+<!--     <report id="print_report_pdf"-->
+<!--        	string="Rental report"-->
+<!--        	model="vehicle.request"-->
+<!--        	report_type="qweb-pdf"-->
+<!--        	name="vechicle_rental.rental_report"-->
+<!--        	file="vechicle_rental.rental_report"/>-->
+
+    <record id="print_report_pdf" model="ir.actions.report">
+            <field name="name">Vehicle Rent Report</field>
+            <field name="model">vehicle.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vechicle_rental.rental_report</field>
+            <field name="report_file">vechicle_rental.rental_report</field>
+            <field name="attachment_use">False</field>
+        </record>
 
 </odoo>

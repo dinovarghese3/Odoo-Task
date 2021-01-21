@@ -1,8 +1,8 @@
 from odoo import models, fields, api
 
 
-class ReportVehicleRent(models.AbstractModel):
-    _name = 'report.vechicle_rental.report'
+class VehicleRentReporting(models.Model):
+    _name = 'report.vechicle_rental.rental_report'
 
     # sequence_id = fields.Many2one('vehicle.request')
     vehicle_id = fields.Many2one('vehicle.rental', )
@@ -12,26 +12,33 @@ class ReportVehicleRent(models.AbstractModel):
     to_date = fields.Date(string="To Date")
 
     def view_report_pdf(self):
+        print(self)
         data = {
-            'model_id': self.id
+            'model_id': self.id,
+
         }
-        print(data)
+        print(self.id)
         # used_context = self._build_contexts(data)
         # data['form']['used_context'] = dict(used_context)
         return self.env.ref(
-            'vechicle_rental.report_vehicle_rental').report_action(self,
-                                                                   data=data)
+            'vechicle_rental.print_report_pdf').report_action(self,
+                                                              data=data)
 
     @api.model
     def _get_report_values(self, docids, data):
         print("Hallo report")
         model_id = data['model_id']
+        print(model_id)
         value = []
-        query = """SELECT *
-                    	FROM vehicle_request"""
+        query = """SELECT request.vehicle_id,request.customer_id,rental.model,
+        rental.vehicle_id,request.from_date,request.to_date,request.state
+        FROM vehicle_request as request INNER JOIN vehicle_rental as 
+        rental ON request.vehicle_id = request.vehicle_id """
         value.append(model_id)
         self._cr.execute(query, value)
         record = self._cr.dictfetchall()
+        print(record)
+        # print(data['vehicle_id'])
         return {
             'docs': record,
             'date_today': fields.Datetime.now(),
