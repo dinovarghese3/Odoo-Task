@@ -12,7 +12,8 @@ class RentRequest(models.Model):
                            required=True, copy=False, index=True,
                            default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', String="Customer",
-                                  required=True, track_visibility='always',store=True)
+                                  required=True, track_visibility='always',
+                                  store=True)
     request_date = fields.Date(string="Request Date",
                                default=fields.date.today())
     vehicle_id = fields.Many2one('vehicle.rental', string="Vehicle",
@@ -46,12 +47,14 @@ class RentRequest(models.Model):
     def _compute_warning(self):
         """ Warning boolean set befor 2 days """
         for rec in self:
+            rec.warning = False
             rec.warning = rec.state == 'confirm' and rec.to_date and (
                 (rec.to_date - fields.Date.today()).days) <= 2
 
     def _compute_late(self):
         """Late boolean field set after the date """
         for rec in self:
+            rec.late = False
             rec.late = rec.state == 'confirm' and rec.to_date and \
                        rec.to_date < fields.Date.today()
             if rec.late:
@@ -67,13 +70,17 @@ class RentRequest(models.Model):
     @api.depends('number_of_period', 'period_type')
     def compute_amount_period_type(self):
         """ Compute amount based on period type and rent"""
-        self.write(
-            {'amount': self.period_type.amount * self.number_of_period})
+        for rec in self:
+            rec.write(
+                {'amount': rec.period_type.amount * rec.number_of_period})
 
     def button_confirm(self):
         """ Button confirm state """
-        self.write({'state': 'confirm'})
-        self.vehicle_id.write({'state': 'not_available'})
+        if self.vehicle_id.state == "available":
+            self.write({'state': 'confirm'})
+            self.vehicle_id.write({'state': 'not_available'})
+        else:
+            raise ValidationError("This car is Not Available")
 
     def button_return(self):
         """Button return state"""
@@ -146,3 +153,7 @@ class RentRequest(models.Model):
             raise ValidationError(
                 _('Sorry, To Date Must be greater Than From Date...'))
 
+    _sql_constraints = [
+        ('unique_sequnce', 'unique(sequence)', 'Sequnce Error!'),
+
+    ]

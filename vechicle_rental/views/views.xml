@@ -41,7 +41,7 @@
         <menuitem id="request" name="Rent Request" parent="vehicle_home"
                   action="vehicle_request" sequence="2"/>
 <!--        Report menu-->
-        <menuitem id="vehicle_report" name="Reports" parent="vehicle_home"
+        <menuitem id="vehicle_report" name="Reporting" parent="vehicle_home"
                   sequence="3"/>
 <!--        Vehicle Rent Report Sub menu-->
         <menuitem id="menu_vehicle_rental_report" name="Vehicle Rental Report"

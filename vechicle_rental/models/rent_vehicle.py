@@ -29,7 +29,8 @@ class VehicleRental(models.Model):
     state = fields.Selection(
         [('available', 'Available'), ('not_available', 'Not available'),
          ('sold', 'Sold')],
-        string='State', default='available', track_visibility='onchange')
+        string='State', default='available', track_visibility='onchange',
+        store=True)
     all_request_ids = fields.One2many('vehicle.request', 'vehicle_id',
                                       string='All Requests',
                                       domain=lambda self: [

@@ -6,11 +6,27 @@
             <t t-call="web.external_layout">
                 <h2 align="center">Vehicle Rental</h2>
                 <div class="page">
+                    <strong>
+                            Report Date:<span t-esc="date_today"/>
+                            <br/>
+                            <span t-if="vehicle_id">
+                                Vehicle :
+                                <span t-esc="vehicle_id"/><br/>
+                            </span>
+                        <div style="text-align:left;">
+                            <span t-if="from_date">
+                            From Date:
+                                <span t-esc="from_date"/>
+                            </span>
+                            <span t-if="to_date">
+                            To Date:
+                                <span t-esc="to_date"/>
+                            </span>
+                        </div>
+                    </strong>
+
                     <div class="oe_structure"/>
                     <div class="row">
-                        <span t-esc="vehicle_id" />
-                        <span t-esc="from_date" />
-                        <span t-esc="to_date" />
                         <table class="table table-condensed">
                             <head>
                                 <tr>
@@ -36,7 +52,7 @@
                                             <t t-esc="data_index+1"/>
                                         </td>
                                         <td style="text-align:left;">
-                                            <t t-esc="data['customer_id']"/>
+                                            <t t-esc="data['name']"/>
                                         </td>
                                         <td style="text-align:left;">
                                             <t t-esc="data['model']"/>
@@ -59,6 +75,7 @@
                 </div>
             </t>
         </t>
+
     </template>
 
 </odoo>
