@@ -5,12 +5,12 @@ from odoo.exceptions import UserError
 class VehicleRentReport(models.TransientModel):
     _name = 'vehicle.report'
 
-    vehicle_id = fields.Many2many('vehicle.rental')
+    vehicle_id = fields.Many2one('vehicle.rental')
     from_date = fields.Date('From Date')
     to_date = fields.Date('To Date')
 
     def view_report_pdf(self):
-        print(self)
+        # print(self)
         data = {
             'model_id': self.id,
             'from_date': self.from_date,

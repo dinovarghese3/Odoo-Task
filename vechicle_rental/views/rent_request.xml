@@ -118,11 +118,14 @@
                                 states="draft"
                                 groups="vechicle_rental.group_vehicle_rental_manager"/>
                         <button name="button_return" string="Return"
-                                class="oe_highlight" type="object"
-                                states="invoiced"/>
+                                type="object"
+                                states="invoiced,confirm"/>
                         <button name="button_create_invoice" type="object"
                                 class="oe_highlight"
-                                states="confirm" string="Create Invoice"/>
+                                string="Create Invoice"
+                                states="confirm"/>
+<!--                                attrs="{'invisible': [('invoice_count', '=', False)]}"-->
+
 
                         <field name="state" widget="statusbar"
                                statusbar_visible="confirm,invoiced"/>

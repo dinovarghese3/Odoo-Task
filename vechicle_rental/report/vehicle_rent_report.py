@@ -14,14 +14,15 @@ class VehicleRentReporting(models.Model):
 
     @api.model
     def _get_report_values(self, docids, data):
-        print("Hallo report")
+        # print("Hallo report")
+        # if data['model_id'] :
         model_id = data['model_id']
         from_date = data['from_date']
         to_date = data['to_date']
         vehicle = data['vehicle_id']
         vehicle_id = data['ve_id']
         # print(from_date)
-        print(vehicle_id)
+        # print(vehicle_id)
         value = []
         # print(from_date,to_date)
         if vehicle_id and from_date and to_date:

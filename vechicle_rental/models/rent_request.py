@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from odoo.osv.osv import osv
 
 
 class RentRequest(models.Model):
@@ -43,6 +44,16 @@ class RentRequest(models.Model):
     late = fields.Boolean(default=False, compute='_compute_late')
     invoice_id = fields.Many2one('account.move')
     is_paid = fields.Boolean(compute='_compute_is_paid')
+    invoice_count = fields.Boolean(string="Invoice count", default=False)
+    product_id = fields.Many2one('product.product')
+
+    def unlink(self):
+        """Allows to delete Request  in draft,return states"""
+        for rec in self:
+            if rec.state not in ['draft', 'return']:
+                raise ValidationError(_(
+                    'Cannot delete a Rent Request which is in state \'%s\'.') %
+                                      (rec.state,))
 
     def _compute_warning(self):
         """ Warning boolean set befor 2 days """
@@ -89,6 +100,8 @@ class RentRequest(models.Model):
 
     def button_create_invoice(self):
         """ creating invoice """
+        self.product_id = self.env['product.product'].search(
+            [('name', '=', 'Rent')], ),
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'date': fields.Date.today(),
@@ -97,8 +110,8 @@ class RentRequest(models.Model):
             'partner_id': self.customer_id.id,
             'currency_id': self.currency_id.id,
             'invoice_line_ids': [(0, 0, {
-                'product_id': self.env['product.product'].search(
-                    [('name', '=', 'Rent')], ),
+                'product_id': self.product_id,
+                'tax_ids': self.product_id.taxes_id,
                 'name': self.vehicle_id.name,
                 'price_unit': self.amount})],
         })
@@ -106,6 +119,11 @@ class RentRequest(models.Model):
         self.invoice_id = invoice.id
         for rec in self:
             rec.write({'state': 'invoiced'})
+            # print("INvoice")
+            print(self.env['account.move'].search_count(
+                [('partner_id', '=', self.customer_id.id),
+                 ('invoice_line_ids.name', '=', self.vehicle_id.name)], ))
+            print(rec.invoice_count)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',

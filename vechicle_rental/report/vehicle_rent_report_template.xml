@@ -14,7 +14,7 @@
                                 <span t-esc="vehicle_id"/><br/>
                             </span>
                         <div style="text-align:left;">
-                            <span t-if="from_date">
+                            <span t-if="from_date" style="margin-right:30px">
                             From Date:
                                 <span t-esc="from_date"/>
                             </span>
