@@ -43,9 +43,13 @@ class RentRequest(models.Model):
     warning = fields.Boolean(default=False, compute='_compute_warning')
     late = fields.Boolean(default=False, compute='_compute_late')
     invoice_id = fields.Many2one('account.move')
-    is_paid = fields.Boolean(compute='_compute_is_paid')
-    invoice_count = fields.Boolean(string="Invoice count", default=False)
+    # is_paid = fields.Boolean()
+    invoice_count = fields.Integer(string="Invoice count", default=0, compute='_compute_is_paid_invoice_count')
     product_id = fields.Many2one('product.product')
+    payment_state = fields.Selection(
+        [('not_paid', 'Not Paid'), ('partially', 'Partially'),
+         ('paid', 'Paid'), ],
+        string='State', default='not_paid', track_visibility='onchange')
 
     def unlink(self):
         """Allows to delete Request  in draft,return states"""
@@ -54,6 +58,7 @@ class RentRequest(models.Model):
                 raise ValidationError(_(
                     'Cannot delete a Rent Request which is in state \'%s\'.') %
                                       (rec.state,))
+            return models.Model.unlink(self)
 
     def _compute_warning(self):
         """ Warning boolean set befor 2 days """
@@ -87,9 +92,12 @@ class RentRequest(models.Model):
 
     def button_confirm(self):
         """ Button confirm state """
-        if self.vehicle_id.state == "available":
+        print(self.vehicle_id.state)
+        print(self.invoice_count)
+        if self.vehicle_id.state == 'available':
             self.write({'state': 'confirm'})
             self.vehicle_id.write({'state': 'not_available'})
+
         else:
             raise ValidationError("This car is Not Available")
 
@@ -116,14 +124,11 @@ class RentRequest(models.Model):
                 'price_unit': self.amount})],
         })
         invoice.action_post()
-        self.invoice_id = invoice.id
+        # self.invoice_id = invoice.id
         for rec in self:
             rec.write({'state': 'invoiced'})
             # print("INvoice")
-            print(self.env['account.move'].search_count(
-                [('partner_id', '=', self.customer_id.id),
-                 ('invoice_line_ids.name', '=', self.vehicle_id.name)], ))
-            print(rec.invoice_count)
+            # print(rec.invoice_count)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
@@ -132,19 +137,41 @@ class RentRequest(models.Model):
             'res_id': invoice.id,
             'context': "{'create': False,'edit': False}", }
 
-    def _compute_is_paid(self):
+    def _compute_is_paid_invoice_count(self):
         """ Checking the invoice is paid or not"""
+        # self.is_paid = False
         for rec in self:
-            rec.is_paid = rec.invoice_id.payment_state == 'paid'
+            # print("is paid")
+            # print(self.env['account.move'].search_count(
+            #     ['&', ('partner_id', '=', self.customer_id.id), ('invoice_line_ids.name', '=', self.vehicle_id.name),
+            #      ('invoice_date', '=', self.to_date)]))
+            # print(rec.invoice_id.payment_state)
+            for i in self.env['account.move'].search(
+                    ['&', ('partner_id', '=', self.customer_id.id),
+                     ('invoice_line_ids.name', '=', self.vehicle_id.name),
+                     ('invoice_date', '=', self.to_date)]):
+                print(i)
+                if i.payment_state == 'paid':
+                    rec.payment_state = 'paid'
+                    # rec.is_paid = i.payment_state == 'paid'
+
+            # print(rec.is_paid)
+            rec.invoice_count = self.env['account.move'].search_count(
+                ['&', ('partner_id', '=', self.customer_id.id), ('invoice_line_ids.name', '=', self.vehicle_id.name),
+                 ('invoice_date', '=', self.to_date)])
+            print(self.invoice_count)
 
     def button_invoices_all(self):
         """ To View the invoice"""
         return {
+            'name': 'All Invoice',
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
             'view_type': 'form',
-            'view_mode': 'form',
+            'view_mode': 'tree,form',
             'res_id': self.invoice_id.id,
+            'domain': [('partner_id', '=', self.customer_id.id), ('invoice_line_ids.name', '=', self.vehicle_id.name),
+                       ('invoice_date', '=', self.to_date)],
             'context': "{'create': False, 'edit':False}",
         }
 
@@ -154,7 +181,7 @@ class RentRequest(models.Model):
         if vals.get('sequence', 'New') == 'New':
             vals['sequence'] = self.env['ir.sequence'].next_by_code(
                 'vehicle.request.sequence') or 'New'
-        return super().create(vals)
+            return super().create(vals)
 
     @api.onchange('from_date', 'to_date')
     def _onchange_from_date_to_date(self):

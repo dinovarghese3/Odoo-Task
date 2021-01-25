@@ -7,19 +7,19 @@
                 <h2 align="center">Vehicle Rental</h2>
                 <div class="page">
                     <strong>
-                            Report Date:<span t-esc="date_today"/>
-                            <br/>
-                            <span t-if="vehicle_id">
-                                Vehicle :
-                                <span t-esc="vehicle_id"/><br/>
-                            </span>
+                        Report Date:<span t-esc="date_today"/>
+                        <br/>
+                        <span t-if="vehicle_id">
+                            Vehicle :
+                            <span t-esc="vehicle_id"/><br/>
+                        </span>
                         <div style="text-align:left;">
                             <span t-if="from_date" style="margin-right:30px">
-                            From Date:
+                                From Date:
                                 <span t-esc="from_date"/>
                             </span>
                             <span t-if="to_date">
-                            To Date:
+                                To Date:
                                 <span t-esc="to_date"/>
                             </span>
                         </div>
@@ -34,6 +34,10 @@
                                         Serial No:</strong></th>
                                     <th style="text-align:left;"><strong>
                                         Customer:</strong></th>
+                                    <th style="text-align:left;"><strong>
+                                        <span t-if="not vehicle_id">
+                                        Vehicle:</span>
+                                    </strong></th>
                                     <th style="text-align:left;"><strong>
                                         Model</strong></th>
                                     <th style="text-align:left;"><strong>
@@ -53,6 +57,11 @@
                                         </td>
                                         <td style="text-align:left;">
                                             <t t-esc="data['name']"/>
+                                        </td>
+                                        <td>
+                                        <span t-if="not vehicle_id">
+                                            <t t-esc="data['vehicle_name']"/>
+                                        </span>
                                         </td>
                                         <td style="text-align:left;">
                                             <t t-esc="data['model']"/>

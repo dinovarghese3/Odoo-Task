@@ -59,31 +59,39 @@ class VehicleRentReporting(models.Model):
         elif from_date and to_date == False and vehicle_id == False:
             query = """SELECT request.vehicle_id,request.customer_id,partner.name,
             request.request_date,rental.model,rental.vehicle_id,request.from_date,
+            vehicle.name as vehicle_name,
             request.to_date,request.state FROM vehicle_request as request
             INNER JOIN vehicle_rental as rental ON request.vehicle_id = rental.id  
-            INNER JOIN  res_partner as partner ON request.customer_id = partner.id 
+            INNER JOIN  res_partner as partner ON request.customer_id = partner.id
+            INNER JOIN fleet_vehicle as vehicle ON vehicle.id = request.vehicle_id 
             WHERE  request.request_date >='%s'""" % (from_date)
         elif from_date == False and to_date and vehicle_id == False:
             query = """SELECT request.vehicle_id,request.customer_id,partner.name,
             request.request_date,rental.model,rental.vehicle_id,request.from_date,
+            vehicle.name as vehicle_name,
             request.to_date,request.state FROM vehicle_request as request
             INNER JOIN vehicle_rental as rental ON request.vehicle_id = rental.id  
             INNER JOIN  res_partner as partner ON request.customer_id = partner.id 
+            INNER JOIN fleet_vehicle as vehicle ON vehicle.id = request.vehicle_id
             WHERE  request.request_date <='%s'""" % (to_date)
         elif vehicle_id == False and from_date and to_date:
             query = """SELECT request.vehicle_id,request.customer_id,partner.name,
             request.request_date,rental.model,rental.vehicle_id,request.from_date,
+            vehicle.name as vehicle_name,
             request.to_date,request.state FROM vehicle_request as request
             INNER JOIN vehicle_rental as rental ON request.vehicle_id = rental.id  
             INNER JOIN  res_partner as partner ON request.customer_id = partner.id 
+            INNER JOIN fleet_vehicle as vehicle ON vehicle.id = request.vehicle_id
             WHERE request.request_date BETWEEN'%s' AND '%s' """ % (
                 from_date, to_date)
         else:
             query = """SELECT request.vehicle_id,request.customer_id,partner.name,
             request.request_date,rental.model,rental.vehicle_id,request.from_date,
+            vehicle.name as vehicle_name,
             request.to_date,request.state FROM vehicle_request as request
             INNER JOIN vehicle_rental as rental ON request.vehicle_id = rental.id  
-            INNER JOIN  res_partner as partner ON request.customer_id = partner.id 
+            INNER JOIN  res_partner as partner ON request.customer_id = partner.id
+            INNER JOIN fleet_vehicle as vehicle ON vehicle.id = request.vehicle_id 
              """
         value.append(model_id)
         self._cr.execute(query, value)

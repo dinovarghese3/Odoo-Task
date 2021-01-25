@@ -23,6 +23,11 @@
                                 context="{'group_by':'vehicle_id'}"/>
                         <filter name="group_by_state" string="State" domain="[]"
                                 context="{'group_by':'state'}"/>
+                        <filter name="group_by_paid" string="Payment state" domain="[]"
+                                context="{'group_by':'payment_state'}"/>
+<!--                        <filter name="group_paid" string="Payment State"-->
+<!--                                context="{'group_by':'is_paid'}"/>-->
+
                     </group>
 
                     <!--                    filter view-->
@@ -32,6 +37,14 @@
                             domain="[('state', '=','confirm')]"/>
                     <filter name="filter_by_return" string="Return"
                             domain="[('state', '=','return')]"/>
+                    <filter name="filter_by_paid" string="Paid"
+                            domain="[('payment_state','=','paid')]"/>
+                    <filter name="filter_by_not_paid" string="Not Paid"
+                            domain="[('payment_state','=','not_paid')]"/>
+<!--                    <filter name="is_paid" string="Paid"-->
+<!--                            domain="[('is_paid','=',True)]"/>-->
+<!--                    <filter name="is_not_paid" string="Not Paid"-->
+<!--                            domain="[('is_paid','=',False)]"/>-->
                 </search>
             </field>
         </record>
@@ -123,23 +136,29 @@
                         <button name="button_create_invoice" type="object"
                                 class="oe_highlight"
                                 string="Create Invoice"
-                                states="confirm"/>
-<!--                                attrs="{'invisible': [('invoice_count', '=', False)]}"-->
-
+                                states="confirm"
+                        />
 
                         <field name="state" widget="statusbar"
                                statusbar_visible="confirm,invoiced"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="button_invoices_all"
-                                    string="Invoice" type="object"
-                                    class="oe_stat_button" icon="fa-edit"
-                                    widget="statinfo" states="invoiced,return">
+                            <!--                            <button name="button_invoices_all"-->
+                            <!--                                    string="Invoice" type="object"-->
+                            <!--                                    class="oe_stat_button" icon="fa-edit"-->
+                            <!--                                    widget="statinfo"-->
+                            <!--                                    attrs="{'invisible': [('invoice_count','&gt;', False)]}"-->
+                            <!--                            />-->
+                            <button name="button_invoices_all" type="object" class="oe_stat_button" string="Invoice"
+                                    icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
                             </button>
+
                         </div>
                         <widget name="web_ribbon" text="Paid"
-                                attrs="{'invisible': [('is_paid', '=', False)]}"/>
+                                    attrs="{'invisible': [('payment_state', '=', 'not_paid')]}"/>
+
                         <div class="oe_title">
                             <h1>
                                 <field name="sequence"/>
@@ -160,7 +179,8 @@
                                 <field name="rent" widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
                                 <field name="invoice_id" invisible="1"/>
-                                <field name="is_paid" invisible="1"/>
+                                <field name="payment_state" invisible="1"/>
+                                <field name="invoice_count" invisible="1"/>
 
                             </group>
                             <group>
