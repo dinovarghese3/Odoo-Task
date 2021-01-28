@@ -24,6 +24,7 @@
         'data/product_demo.xml',
         'wizards/vehicle_rent_report.xml',
         'views/views.xml',
+        'views/action_manager.xml',
         'data/sequence.xml',
         'views/rent_request.xml',
         'views/rent_vehicle.xml',

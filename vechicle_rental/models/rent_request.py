@@ -123,7 +123,7 @@ class RentRequest(models.Model):
                 'name': self.vehicle_id.name,
                 'price_unit': self.amount})],
         })
-        invoice.action_post()
+        # invoice.action_post()
         # self.invoice_id = invoice.id
         for rec in self:
             rec.write({'state': 'invoiced'})

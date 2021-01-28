@@ -5,26 +5,13 @@ from odoo.exceptions import ValidationError
 class VehicleRentReporting(models.Model):
     _name = 'report.vechicle_rental.rental_report'
 
-    # sequence_id = fields.Many2one('vehicle.request')
-    # vehicle_id = fields.Many2one('vehicle.rental', )
-    # customer_id = fields.Many2one('res.partner',
-    #                               related="sequence_id.customer_id")
-    # from_date = fields.Date(string="From Date")
-    # to_date = fields.Date(string="To Date")
-
     @api.model
     def _get_report_values(self, docids, data):
-        # print("Hallo report")
-        # if data['model_id'] :
         model_id = data['model_id']
         from_date = data['from_date']
         to_date = data['to_date']
-        vehicle = data['vehicle_id']
         vehicle_id = data['ve_id']
-        # print(from_date)
-        # print(vehicle_id)
         value = []
-        # print(from_date,to_date)
         if vehicle_id and from_date and to_date:
             query = """SELECT request.vehicle_id,request.customer_id,partner.name,
             request.request_date,rental.model,rental.vehicle_id,request.from_date,
@@ -96,8 +83,7 @@ class VehicleRentReporting(models.Model):
         value.append(model_id)
         self._cr.execute(query, value)
         record = self._cr.dictfetchall()
-        # print(record)
-        # print(data['vehicle_id'])
+
         return {
             'docs': record,
             'date_today': fields.Date.today(),

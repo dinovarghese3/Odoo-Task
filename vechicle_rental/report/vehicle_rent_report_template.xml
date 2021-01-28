@@ -7,7 +7,7 @@
                 <h2 align="center">Vehicle Rental</h2>
                 <div class="page">
                     <strong>
-                        Report Date:<span t-esc="date_today"/>
+                        Report Date : <span t-esc="date_today.strftime('%d/%m/%Y')" />
                         <br/>
                         <span t-if="vehicle_id">
                             Vehicle :
@@ -16,18 +16,18 @@
                         <div style="text-align:left;">
                             <span t-if="from_date" style="margin-right:30px">
                                 From Date:
-                                <span t-esc="from_date"/>
+                                <span t-esc="from_date" t-options='{"widget": "date"}' />
                             </span>
                             <span t-if="to_date">
                                 To Date:
-                                <span t-esc="to_date"/>
+                                <span t-esc="to_date" t-options='{"widget": "date"}' />
                             </span>
                         </div>
                     </strong>
 
                     <div class="oe_structure"/>
                     <div class="row">
-                        <table class="table table-condensed">
+                        <table class="table table-striped table-hover">
                             <head>
                                 <tr>
                                     <th style="text-align:left;"><strong>
@@ -50,7 +50,7 @@
                                 </tr>
                             </head>
                             <body>
-                                <t t-foreach="docs" t-as="data">
+                                <t t-foreach="docs" t-as="data" class="table table-striped">
                                     <tr>
                                         <td style="text-align:left;">
                                             <t t-esc="data_index+1"/>
@@ -68,10 +68,10 @@
                                         </td>
 
                                         <td style="text-align:left;">
-                                            <t t-esc="data['from_date']"/>
+                                            <t t-esc="data['from_date'].strftime('%d/%m/%Y')"/>
                                         </td>
                                         <td style="text-align:left;">
-                                            <t t-esc="data['to_date']"/>
+                                            <t t-esc="data['to_date'].strftime('%d/%m/%Y')"/>
                                         </td>
                                         <td style="text-align:left;">
                                             <t t-esc="data['state']"/>

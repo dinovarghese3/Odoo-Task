@@ -20,13 +20,11 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Print" name="view_report_pdf"
+                        <button string="Print Pdf" name="view_report_pdf"
                                 type="object"
                                 class="btn-primary"/>
-                        <button name="print_xlsx" string="Print Xls" type="object"
-
+                        <button name="print_xlsx" string="Print Xlsx" type="object"
                                 default_focus="1" class="oe_highlight"/>
-
                         <button string="Discard" class="btn-secondary"
                                 special="cancel"/>
                     </footer>

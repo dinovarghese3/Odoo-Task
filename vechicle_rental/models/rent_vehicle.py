@@ -69,7 +69,6 @@ class VehicleRental(models.Model):
 
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Vehicle is already exists!'),
-
     ]
 
 
