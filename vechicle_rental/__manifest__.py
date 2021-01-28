@@ -19,7 +19,6 @@
     'images': ['static/description/icon.png'],
     # always loaded
     'data': [
-
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/product_demo.xml',
@@ -31,8 +30,6 @@
         'views/registration_date_fleet.xml',
         'report/vehicle_report.xml',
         'report/vehicle_rent_report_template.xml',
-
-
     ],
     # only loaded in demonstration mode
 
