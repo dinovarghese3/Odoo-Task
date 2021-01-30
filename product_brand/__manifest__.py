@@ -20,14 +20,15 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','point_of_sale','product'],
+    'depends': ['base', 'point_of_sale', 'product'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/product_brand_inherit_view.xml',
+        'views/product_brand_js_view.xml',
 
     ],
     # only loaded in demonstration mode
-
+    'qweb':['static/src/xml/pos_product_brand.xml'],
 }

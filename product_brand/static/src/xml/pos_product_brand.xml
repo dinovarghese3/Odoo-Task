@@ -1,0 +1,33 @@
+<template id="template" inherit_id="point_of_sale.template" xml:space="preserve">
+    <t t-extend="Orderline">
+        <t t-jquery="span.product_name" t-operation="after">
+<!--        <t t-if="product.brand">-->
+            <div class="brand" t-attr-id="article_product_#{product.id}">
+                <t t-esc="product.brand_name"/>
+                <t t-esc="Hai"/>
+            </div>
+        </t>
+        <!--        </t>-->
+    </t>
+
+
+<!--    <div class="orderlines">-->
+<!--                <t t-foreach="products" t-as="line" t-key="line.product_id">-->
+<!--                    <div>-->
+<!--                        <t t-esc="line.product_name.substr(0,20)" />-->
+<!--                        <span class="pos-receipt-right-align">-->
+<!--                            <t t-esc="Math.round(line.quantity * Math.pow(10, pos.dp['Product Unit of Measure'])) / Math.pow(10, pos.dp['Product Unit of Measure'])" />-->
+<!--                            <t t-if="line.uom !== 'Units'">-->
+<!--                                <t t-esc="line.uom" />-->
+<!--                            </t>-->
+<!--                            x-->
+<!--                            <t t-esc="pos.format_currency_no_symbol(line.price_unit)" />-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                    <t t-if="line.discount !== 0">-->
+<!--                        <div class="pos-receipt-left-padding">Discount: <t t-esc="line.discount" />%</div>-->
+<!--                    </t>-->
+<!--                </t>-->
+<!--            </div>-->
+
+</template>
