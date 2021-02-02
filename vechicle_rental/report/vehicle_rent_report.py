@@ -2,7 +2,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
-class VehicleRentReporting(models.Model):
+class VehicleRentReporting(models.AbstractModel):
     _name = 'report.vechicle_rental.rental_report'
 
     @api.model

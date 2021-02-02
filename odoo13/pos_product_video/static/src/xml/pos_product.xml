@@ -1,0 +1,16 @@
+
+<templates id="template" inherit_id="point_of_sale.template" xml:space="preserve">
+    <t t-extend="Product">
+        <t t-jquery="div.product-img" t-operation="append">
+<!--             <t t-if="product.rating">-->
+<!--            <span>K</span>-->
+                 <span class="video_icon" t-attf-id="article_product_#{product.id}">
+                     <button style="float:left;margin-left:5px;margin-top:2px;padding:0;width:20%;background-color: transparent;border:none;">
+                     <img  t-att-src="'/pos_product_video/static/icons/play-btn-fill.svg'" style="width:100%" />
+                     </button>
+<!--                     <span>H</span>-->
+                     <t t-esc="product.product_video"/>
+                 </span>
+             </t>
+        </t>
+</templates>

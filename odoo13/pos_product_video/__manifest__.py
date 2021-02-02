@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Product Brand",
+    'name': "Product Video",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -24,12 +24,15 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/brand_name.xml',
-        'views/product_brand_js_view.xml'
+        # 'security/ir.model.access.csv',
+        'views/product_video.xml',
+        'views/product_video_js_link.xml',
     ],
-    'qweb':['static/src/xml/pos_product_brand.xml',],
+    'qweb': [
+            'static/src/xml/pos_product.xml',
+
+        ],
     # only loaded in demonstration mode
-    'auto_install': True,
+    'auto_install': True
 
 }
