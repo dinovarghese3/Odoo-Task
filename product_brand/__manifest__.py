@@ -31,4 +31,5 @@
     ],
     # only loaded in demonstration mode
     'qweb':['static/src/xml/pos_product_brand.xml',],
+    'auto_install': True,
 }

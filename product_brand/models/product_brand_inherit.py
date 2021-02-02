@@ -10,8 +10,11 @@ class ProductBrandNameInherit(models.Model):
 
 class ProductBrandInherit(models.Model):
     # _name = 'product.inherit.brand'
+
     _inherit = 'product.product'
+    _inherit = 'product.template'
+
     _description = 'Product Brand to POS'
     _rec_name = 'name'
 
-    brand_name_id= fields.Many2one('productbrand.name', string="Brand")
+    brand_name_id = fields.Many2one('productbrand.name', string="Brand")
