@@ -26,11 +26,9 @@
     'data': [
         'security/ir.model.access.csv',
         'views/brand_name.xml',
-        'views/templates.xml',
         'views/product_brand_js_view.xml'
     ],
-    'qweb':['static/src/xml/pos_product_brand.xml',
-            'static/src/xml/pos_product_brand_order_line.xml'],
+    'qweb':['static/src/xml/pos_product_brand.xml',],
     # only loaded in demonstration mode
 
 }

@@ -1,6 +1,6 @@
 odoo.define('pos_brand_name.product_brand_order_line', function(require) {
     "use strict";
-
+//    To Add Brand Name in Orderline
     var models = require('point_of_sale.models');
     var _super_orderline = models.Orderline.prototype;
 //    console.log(_super_orderline)

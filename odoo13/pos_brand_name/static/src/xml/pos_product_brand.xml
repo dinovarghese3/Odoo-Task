@@ -1,4 +1,5 @@
 <templates id="template" inherit_id="point_of_sale.template" xml:space="preserve">
+<!--    For Adding Brand Name in Receipt-->
     <t t-extend="OrderReceipt">
         <t t-jquery="div.orderlines div" t-operation="append">
             <t t-if="line.brand_name_id">
