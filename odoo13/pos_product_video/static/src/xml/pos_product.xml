@@ -1,16 +1,68 @@
 
-<templates id="template" inherit_id="point_of_sale.template" xml:space="preserve">
-    <t t-extend="Product">
-        <t t-jquery="div.product-img" t-operation="append">
-<!--             <t t-if="product.rating">-->
-<!--            <span>K</span>-->
-                 <span class="video_icon" t-attf-id="article_product_#{product.id}">
-                     <button style="float:left;margin-left:5px;margin-top:2px;padding:0;width:20%;background-color: transparent;border:none;">
-                     <img  t-att-src="'/pos_product_video/static/icons/play-btn-fill.svg'" style="width:100%" />
-                     </button>
-<!--                     <span>H</span>-->
-                     <t t-esc="product.product_video"/>
-                 </span>
-             </t>
+<templates >
+<!--    <t t-extend="Product">-->
+<!--        <t t-jquery="div.product-img" t-operation="append">-->
+<!--&lt;!&ndash;             <t t-if="product.rating">&ndash;&gt;-->
+<!--&lt;!&ndash;            <span>K</span>&ndash;&gt;-->
+<!--            <t t-name="ProductCreationWidget">-->
+<!--                 <span id="video_icons_style" t-attf-id="article_product_#{product.id}" >-->
+<!--&lt;!&ndash;                        <div class="_onClick">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <i class="fas fa-play-circle"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                     <button onClick="playVideo();" style="background-color: #1b4d4d">-->
+<!--                        <i class="fa fa-video-camera" style="color: white"/>-->
+<!--                    </button>-->
+<!--                        <t t-esc="product.product_video"/>-->
+<!--                 </span>-->
+<!--            </t>-->
+<!--             </t>-->
+        <t t-extend="Product">
+        <!-- t-query takes a css selector and do an operation-->
+        <t t-jquery=".product-img" t-operation="append">
+            <t t-if="product.product_video">
+
+            <span class="video-tag" id="video_icons_style" >
+<!--                <i class="fa fa-video-camera" id = "icon" style=""/>-->
+                <i class="fa fa-play" id="icon" style="color: white"/>
+            </span>
+
+            </t>
         </t>
+    </t>
+
+
+
+<!-- popup widget for showing the product video-->
+    <t t-name="ProductVideoPopupWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup" style="height: 30%;width: 25%;">
+                <header class="title">Product Video
+                    <br/>
+<!--                    <span id="cancelicon">-->
+<!--                        <i class="fa fa-window-close button cancel" />-->
+<!--                    </span>-->
+<!--                    <span class="button cancel" style="margin:0;background:transparent;border:0solid;">**</span>-->
+                </header>
+                <html class="body">
+<!--                    <t t-extend="Product">-->
+<!--                    <t t-foreach="widget.products" t-as="product">-->
+<!--                    <t id="video_icons_style" t-attf-id="article_product_#{product.id}" >-->
+<!--                    <div>-->
+<!--                        <t t-esc="product.product_video"/>-->
+                        <iframe class="videoshow" src="product_video" allowFullScreen="true" frameborder="0"/>
+<!--                    </t>-->
+<!--                    </t>-->
+<!--                    </t>-->
+                </html>
+                <footer class="footer">
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+    </t>
+
+<!--        </t>-->
 </templates>

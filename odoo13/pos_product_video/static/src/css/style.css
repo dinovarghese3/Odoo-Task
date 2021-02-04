@@ -1,4 +1,31 @@
 
-.video_icon {
-    float:right
+#video_icons_style{
+    position: absolute;
+    width:15%;
+    height:15%;
+    top: 5px;
+    left: 5px;
+    vertical-align: top;
+    line-height: 13px;
+    background-color: #662900;
+    border:2px solid #662900;
+
+}
+#icon{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+
+}
+#cancelicon{
+    position:absolute;
+    width:100%;
+    padding: 0;
+    border: none;
+    background: none;
+}
+.videoshow{
+    width:100%;
+    hight:40%;
 }

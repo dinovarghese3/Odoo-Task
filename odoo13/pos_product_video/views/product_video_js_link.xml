@@ -5,7 +5,7 @@
             <script type="text/javascript"
                     src="/pos_product_video/static/src/js/pos_product_video.js"/>
             <link rel="stylesheet"
-                  href="/pos_product_video/static/src/css/style.css" id="stylesheet"/>
+                  href="/pos_product_video/static/src/css/style.css" />
         </xpath>
     </template>
 
