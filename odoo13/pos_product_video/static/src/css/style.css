@@ -1,4 +1,9 @@
+#popupid{
+    position:absolute;
+    width:50%;
+    height:50%;
 
+}
 #video_icons_style{
     position: absolute;
     width:15%;
@@ -9,7 +14,6 @@
     line-height: 13px;
     background-color: #662900;
     border:2px solid #662900;
-
 }
 #icon{
     width:100%;
@@ -20,12 +24,11 @@
 }
 #cancelicon{
     position:absolute;
-    width:100%;
-    padding: 0;
     border: none;
     background: none;
 }
-.videoshow{
-    width:100%;
-    hight:40%;
+.centered {
+  position: fixed; /* or absolute */
+  top: 30%;
+  left: 30%;
 }

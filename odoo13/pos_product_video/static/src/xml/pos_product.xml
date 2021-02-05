@@ -22,7 +22,6 @@
             <t t-if="product.product_video">
 
             <span class="video-tag" id="video_icons_style" >
-<!--                <i class="fa fa-video-camera" id = "icon" style=""/>-->
                 <i class="fa fa-play" id="icon" style="color: white"/>
             </span>
 
@@ -35,30 +34,15 @@
 <!-- popup widget for showing the product video-->
     <t t-name="ProductVideoPopupWidget">
         <div role="dialog" class="modal-dialog">
-            <div class="popup" style="height: 30%;width: 25%;">
-                <header class="title">Product Video
-                    <br/>
-<!--                    <span id="cancelicon">-->
-<!--                        <i class="fa fa-window-close button cancel" />-->
-<!--                    </span>-->
-<!--                    <span class="button cancel" style="margin:0;background:transparent;border:0solid;">**</span>-->
-                </header>
-                <html class="body">
-<!--                    <t t-extend="Product">-->
-<!--                    <t t-foreach="widget.products" t-as="product">-->
-<!--                    <t id="video_icons_style" t-attf-id="article_product_#{product.id}" >-->
-<!--                    <div>-->
-<!--                        <t t-esc="product.product_video"/>-->
-                        <iframe class="videoshow" src="product_video" allowFullScreen="true" frameborder="0"/>
-<!--                    </t>-->
-<!--                    </t>-->
-<!--                    </t>-->
-                </html>
-                <footer class="footer">
-                    <div class="button cancel">
-                        Cancel
+            <div class="centered">
+                    <span id="cancelicon">
+                        <i class="fa fa-window-close fa-2x button cancel" style="color: white" />
+                    </span>
+                    <div class="embed-responsive embed-responsive-21by9">
+                        <iframe width="560" height="315" t-att-src="widget.pVideo"
+                                allowfullscreen="allowfullscreen" />
                     </div>
-                </footer>
+
             </div>
         </div>
 

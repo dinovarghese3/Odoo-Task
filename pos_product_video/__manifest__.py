@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Product Brand",
+    'name': "Product Video",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,16 +20,16 @@
     'version': '14.0.1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale', 'product'],
+    'depends': ['base','point_of_sale','product'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/product_brand_inherit_view.xml',
-        'views/product_brand_js_view.xml',
-
+        # 'security/ir.model.access.csv',
+        'views/product_video.xml',
+        'views/product_video_xml_files_link.xml',
+        # 'static/src/xml/Adding_product_video_pos.xml'
     ],
     # only loaded in demonstration mode
-    'qweb':['static/src/xml/pos_product_brand.xml',],
-    'auto_install': True,
+    'auto_install':True
+
 }
