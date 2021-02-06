@@ -1,0 +1,18 @@
+#buttonicon{
+    position:absolute;
+    padding:0;
+    width:20%;
+    height:20%;
+    background-color: #000000;
+    left: 2px;
+
+}
+#icon{
+    margin:0;
+    padding:0;
+}
+#centered{
+    position: fixed;
+    top: 25%;
+    left: 30%;
+}

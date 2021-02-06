@@ -25,11 +25,12 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/product_video.xml',
+        'views/product_video_pos.xml',
         'views/product_video_xml_files_link.xml',
-        # 'static/src/xml/Adding_product_video_pos.xml'
+
     ],
     # only loaded in demonstration mode
+    'qweb':['static/src/xml/pos_product_video.xml'],
     'auto_install':True
 
 }
