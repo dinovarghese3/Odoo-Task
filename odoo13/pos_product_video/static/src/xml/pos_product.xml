@@ -1,52 +1,32 @@
-
-<templates >
-<!--    <t t-extend="Product">-->
-<!--        <t t-jquery="div.product-img" t-operation="append">-->
-<!--&lt;!&ndash;             <t t-if="product.rating">&ndash;&gt;-->
-<!--&lt;!&ndash;            <span>K</span>&ndash;&gt;-->
-<!--            <t t-name="ProductCreationWidget">-->
-<!--                 <span id="video_icons_style" t-attf-id="article_product_#{product.id}" >-->
-<!--&lt;!&ndash;                        <div class="_onClick">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <i class="fas fa-play-circle"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                     <button onClick="playVideo();" style="background-color: #1b4d4d">-->
-<!--                        <i class="fa fa-video-camera" style="color: white"/>-->
-<!--                    </button>-->
-<!--                        <t t-esc="product.product_video"/>-->
-<!--                 </span>-->
-<!--            </t>-->
-<!--             </t>-->
-        <t t-extend="Product">
-        <!-- t-query takes a css selector and do an operation-->
+<templates>
+<!--Showing Video icon -->
+    <t t-extend="Product">
         <t t-jquery=".product-img" t-operation="append">
             <t t-if="product.product_video">
-
-            <span class="video-tag" id="video_icons_style" >
-                <i class="fa fa-play" id="icon" style="color: white"/>
-            </span>
-
+                <span class="video-tag" id="video_icons_style">
+                    <i class="fa fa-play" id="icon" style="color: white"/>
+                </span>
             </t>
         </t>
     </t>
 
 
-
-<!-- popup widget for showing the product video-->
+    <!-- popup widget for showing the product video-->
     <t t-name="ProductVideoPopupWidget">
         <div role="dialog" class="modal-dialog">
             <div class="centered">
-                    <span id="cancelicon">
-                        <i class="fa fa-window-close fa-2x button cancel" style="color: white" />
-                    </span>
-                    <div class="embed-responsive embed-responsive-21by9">
-                        <iframe width="560" height="315" t-att-src="widget.pVideo"
-                                allowfullscreen="allowfullscreen" />
-                    </div>
+                <span id="cancelicon">
+                    <i class="fa fa-window-close fa-2x button cancel"
+                       style="color: white"/>
+                </span>
+                <div class="embed-responsive embed-responsive-21by9">
+                    <iframe width="560" height="315" t-att-src="widget.pVideo"
+                            allowfullscreen="allowfullscreen"/>
+                </div>
 
             </div>
         </div>
 
     </t>
 
-<!--        </t>-->
 </templates>

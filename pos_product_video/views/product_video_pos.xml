@@ -10,5 +10,28 @@
       </field>
     </field>
   </record>
+  <record id="product_video_settings" model="ir.ui.view">
+    <field name="name">product.video.settings</field>
+    <field name="model">pos.config</field>
+    <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+      <field name="arch" type="xml">
+<!--        <field name="product_configurator" position="before">-->
+<!--            <field name="product_video"/>-->
+<!--        </field>-->
+        <xpath expr="//div[@id='category_reference']" position="before">
+                  <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                          <field name="product_video"/>
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <label for="product_video"/>
+                          <div class="text-muted">
+                              Select Coupon Category Products
+                          </div>
+                      </div>
+                  </div>
+              </xpath>
+      </field>
+  </record>
   </data>
 </odoo>

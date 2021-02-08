@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_most_selling_products_websit_most_selling_products_websit,most_selling_products_websit.most_selling_products_websit,model_most_selling_products_websit_most_selling_products_websit,base.group_user,1,1,1,1

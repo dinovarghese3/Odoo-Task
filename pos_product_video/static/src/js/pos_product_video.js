@@ -1,5 +1,4 @@
 odoo.define('pos_product_video.pos_product_video', function(require) {
-
     const { Gui } = require('point_of_sale.Gui');
     const ProductItem = require('point_of_sale.ProductItem');
     const Registries = require('point_of_sale.Registries');
@@ -11,10 +10,11 @@ odoo.define('pos_product_video.pos_product_video', function(require) {
     var rpc = require('web.rpc');
     var pVideo;
     console.log("wrk");
-
     const PosProductVideo = ProductItem => class extends ProductItem{
+
         playVideo(ev){
             ev.stopPropagation();
+            console.log(ev)
             console.log(this.props.product.product_video_url)
             this.pVideo=this.props.product.product_video_url;
             if (this.props.product.product_video_url){
@@ -36,6 +36,7 @@ odoo.define('pos_product_video.pos_product_video', function(require) {
 
         }
 
+
     }
     class ProductVideoPopup extends AbstractAwaitablePopup {}
     ProductVideoPopup.template = 'ProductVideoPopup';
@@ -49,5 +50,4 @@ odoo.define('pos_product_video.pos_product_video', function(require) {
     Registries.Component.add(ProductVideoPopup);
     Registries.Component.extend(ProductItem, PosProductVideo);
     return PosProductVideo,ProductVideoPopup;
-
 });

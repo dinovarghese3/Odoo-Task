@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="most_selling_products_websit.list">
+      <field name="name">most_selling_products_websit list</field>
+      <field name="model">most_selling_products_websit.most_selling_products_websit</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="most_selling_products_websit.action_window">
+      <field name="name">most_selling_products_websit window</field>
+      <field name="res_model">most_selling_products_websit.most_selling_products_websit</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="most_selling_products_websit.action_server">
+      <field name="name">most_selling_products_websit server</field>
+      <field name="model_id" ref="model_most_selling_products_websit_most_selling_products_websit"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="most_selling_products_websit" id="most_selling_products_websit.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="most_selling_products_websit.menu_1" parent="most_selling_products_websit.menu_root"/>
+    <menuitem name="Menu 2" id="most_selling_products_websit.menu_2" parent="most_selling_products_websit.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="most_selling_products_websit.menu_1_list" parent="most_selling_products_websit.menu_1"
+              action="most_selling_products_websit.action_window"/>
+    <menuitem name="Server to list" id="most_selling_products_websit" parent="most_selling_products_websit.menu_2"
+              action="most_selling_products_websit.action_server"/>
+-->
+  </data>
+</odoo>

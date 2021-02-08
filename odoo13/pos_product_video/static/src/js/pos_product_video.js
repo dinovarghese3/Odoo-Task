@@ -5,12 +5,11 @@ odoo.define('pos_product_video.pos_product_video', function (require) {
     var models = require('point_of_sale.models');
     var gui = require('point_of_sale.gui');
     var PopupWidget = require('point_of_sale.popups');
-
     var rpc = require('web.rpc');
     var QWeb = core.qweb;
     var _t = core._t;
     models.load_fields('product.product','product_video');
-
+    models.load_fields('pos.config','product_video_enable')
 
 var PosProductVideoPopupWidget = PopupWidget.extend({
 //PopUp widget Function
