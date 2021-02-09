@@ -1,24 +1,43 @@
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+        <template id="product" name="Most selling products">
+            <t t-call="website.layout">
+                <div class="container">
+                    <table>
+                        <tbody>
+
+                            <t t-foreach="products" t-as="pro">
+                                <tr>
+                                    <td class="content-cell"
+                                        style="margin:10px;padding: 2px 2px 2px 2px;">
+                                        <article
+                                                class="product"
+                                                data-product-id="49"
+                                                tabindex="0"
+                                                aria-labelledby="article_product_49">
+                                            <div class="product-img">
+                                                <img src="http://localhost:8013/web/image?model=product.template&amp;field=image_128&amp;pro.id"
+                                                     alt="Product image"
+                                                     style="margin: 2px 2px 2px 2px;"/>
+                                                <div class="product-name"
+                                                     id="article_product_49">
+                                                    <b>
+                                                        <t t-esc="pro.name"/></b>
+                                                </div>
+                                                <span class="price-tag">
+                                                    <t t-esc="pro.list_price"/>
+                                                </span>
+                                            </div>
+                                        </article>
+                                    </td>
+                                </tr>
+                            </t>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </t>
-          </dl>
         </template>
--->
     </data>
 </odoo>
