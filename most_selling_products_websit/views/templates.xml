@@ -11,7 +11,9 @@
                     <section>
                         <div class="product_details">
                             <center>
+                                <t t-if="website_most_selle_product_ids">
                                 <h3>Top Selling Products</h3>
+                                </t>
                             </center>
                         </div>
                         <br/>
@@ -36,8 +38,8 @@
                                                     <div style="text-align: left;margin: 10px 15px 3px 15px;">
 
                                                         <t t-if="website_product_id.name">
-                                                            <span t-esc="website_product_id.name"
-                                                                  style="font-weight: bolder;color: #3e3b3b;"/>
+                                                            <center><span t-esc="website_product_id.id"
+                                                                  style="font-weight: bolder;color: #3e3b3b;"/></center>
                                                             <br/>
                                                         </t>
                                                         <!--                                                        <t t-if="website_product_id.name">-->
@@ -66,13 +68,13 @@
                         <br/><br/>
                         <div class="product_details">
                             <center>
-                                <h3>All Products</h3>
+                                <h3>Most Viewed Products </h3>
                             </center>
                         </div>
                         <br/><br/>
                         <div class="oe_product_cart_new row"
                              style="overflow: hidden;">
-                            <t t-foreach="list_ids" t-as="website_product_id">
+                            <t t-foreach="products_most_vist" t-as="website_product_id">
                                 <div class="col-md-3 col-sm-4 col-xs-12"
                                      style="padding:1px 1px 1px 1px;">
                                     <a t-attf-href="/shop/product/#{ slug(website_product_id) }">
@@ -86,12 +88,13 @@
                                                              t-attf-src="/web/image/product.template/#{website_product_id.id}/image_1920"
                                                              class="img oe_product_image"
                                                              style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
+                                                        <span t-esc="website_product_id.name"></span>
                                                     </div>
                                                     <div style="text-align: left;margin: 10px 15px 3px 15px;">
 
                                                         <t t-if="website_product_id.name">
-                                                            <span t-esc="website_product_id.name"
-                                                                  style="font-weight: bolder;color: #3e3b3b;"/>
+                                                            <center><span t-esc="website_product_id.name"
+                                                                  style="font-weight: bolder;color: #3e3b3b;"/></center>
                                                             <br/>
                                                         </t>
                                                         <!--                                                        <t t-if="website_product_id.name">-->

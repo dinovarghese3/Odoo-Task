@@ -52,22 +52,26 @@ class WebsiteSort(Home):
     @http.route(auth='public')
     def index(self, **kw):
         super(WebsiteSort, self).index()
-        list_ids = request.env['product.template'].search(
+        list_ids = request.env['product.product'].search(
             [('is_published', '=', True)])
         website_most_selle_product_ids = request.env['product.template'].search(
-            [('sold_qty', '>', 0)])
+            [('sold_qty', '>', 0)], order='sold_qty desc', limit=8)
+        products_most_vist = set(request.env['website.track'].search(
+            [('product_id.name', '!=', False)]).mapped(
+            'product_id.product_tmpl_id'))
+        print(products_most_vist)
+        # list=[]
+        for i in products_most_vist:
+            print(i.id, i.name)
+
+        # for j in list:
+        #     print(j.product_id.name)
+
+        # for i in products_most_vist:
+        #     products_most = request.env['website.track'].search_count(
+        #         [('product_id', '=', i.product_id.id)])
+        #     print(i.product_id.name, "   ", products_most)
         return request.render('website.homepage', {
-            'website_most_selle_product_ids': website_most_selle_product_ids, 'list_ids': list_ids
+            'website_most_selle_product_ids': website_most_selle_product_ids,
+            'list_ids': list_ids, 'products_most_vist': products_most_vist
         })
-    #
-    # def top_selling_product(self):
-    #     date = fields.Date.today()
-    #     date_start = fields.Date.today() - datetime.timedelta(days=7)
-    #
-    #     orders = request.env['product.template'].search([('sold_qty', '>', 0)])
-    #     for i in orders:
-    #         # orderline = i.order_line
-    #         # for j in orderline:
-    #         self.list_of_product.append(i)
-    #         print(i)
-    #     return self.list_of_product
