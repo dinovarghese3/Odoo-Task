@@ -26,8 +26,9 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/add_to_template_product.xml',
-        'views/views.xml',
+        'views/badge_to_shop.xml',
         'views/templates.xml',
+        'data/demo_add_pricelist.xml'
 
     ],
     'qweb': [],

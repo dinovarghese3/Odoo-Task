@@ -1,47 +1,5 @@
-# from idlelib import window
-#
-# from odoo import http, api
-# from odoo.http import request
-#
-#
-# class MostSale(http.Controller):
-#     @http.route('''/''',
-#                 type='http', auth='public', website=True)
-#     def most_sale_detsils(self, **kwargs):
-#         print("hai")
-#         products = request.env['product.template'].sudo().search(
-#             [('sale_ok', '=', True)])
-#         for j in products:
-#             print("img",j.image_1920,"\n")
-#             # sale_details = request.env['sale.report'].sudo().search(
-#         #         [('product_id.name', '=', j.name)])
-#         #     for k in sale_details:
-#         #         print(k.product_id.name)
-#         #         print(k.product_uom_qty)
-#
-#         # for i in sale_details:
-#         #     print(i.product_id.name)
-#         # self.get_img_url(products)
-#
-#         return request.render('most_selling_products_websit.product',
-#                               {'products': products})
-#
-#     @api.model
-#     def get_values(self):
-#         print("DINO>>>>>>>>>>>")
-#         # Generates a random name between 9 and 15 characters long and writes it to the record.
-#         # self.write({'name': ''.join(
-#         #     random.SystemRandom().choice(string.ascii_uppercase + string.digits)
-#         #     for _ in range(randint(9, 15)))})
-#
-#     # def get_most_selling_product(self):
-#     #     print("Most selling product")
-#     # def get_img_url(self, product):
-#     #     for i in product:
-#     #         print(i)
-
 from odoo.addons.portal.controllers.web import Home
-from odoo import http, fields
+from odoo import http, fields, models
 from odoo.http import request
 from odoo.tools.safe_eval import datetime
 
@@ -52,26 +10,49 @@ class WebsiteSort(Home):
     @http.route(auth='public')
     def index(self, **kw):
         super(WebsiteSort, self).index()
-        list_ids = request.env['product.product'].search(
-            [('is_published', '=', True)])
+        # self.set_quantity()
+        products = request.env['product.template'].search([])
+        for each in products:
+            each.sold_qty = 0
+            each.no_of_view
+            each.top_selling = False
+            each.most_visited = False
+            no_of_view = 0
+        date = fields.Date.today()
+        date_start = fields.Date.today() - datetime.timedelta(days=7)
+
+        orders = request.env['sale.order'].search([('date_order', '<=', date),
+                                                   ('date_order', '>=',
+                                                    date_start),
+                                                   ('website_id', '!=', False),
+                                                   ('state', 'in',
+                                                    ('sale', 'done', 'sent'))])
+
+        for order in orders:
+            order_line = order.order_line
+            for product in order_line:
+                product.product_id.sold_qty = product.product_id.sold_qty + 1
+
+        products_vist = request.env['website.track'].search(
+            [('visit_datetime', '<=', date),
+             ('visit_datetime', '>=', date_start),
+             ('product_id', '!=', False)])
+        for product in products_vist:
+            product.product_id.no_of_view = product.product_id.no_of_view + 1
+
         website_most_selle_product_ids = request.env['product.template'].search(
             [('sold_qty', '>', 0)], order='sold_qty desc', limit=8)
-        products_most_vist = set(request.env['website.track'].search(
-            [('product_id.name', '!=', False)]).mapped(
-            'product_id.product_tmpl_id'))
-        print(products_most_vist)
-        # list=[]
-        for i in products_most_vist:
-            print(i.id, i.name)
+        for each in website_most_selle_product_ids:
+            each.top_selling = True
+        products_most_vist = request.env['product.template'].search(
+            [('is_published', '=', True),
+             ('no_of_view', '!=', 0)], order='no_of_view desc', limit=8)
+        for each in products_most_vist:
+            each.most_visited = True
 
-        # for j in list:
-        #     print(j.product_id.name)
-
-        # for i in products_most_vist:
-        #     products_most = request.env['website.track'].search_count(
-        #         [('product_id', '=', i.product_id.id)])
-        #     print(i.product_id.name, "   ", products_most)
         return request.render('website.homepage', {
             'website_most_selle_product_ids': website_most_selle_product_ids,
-            'list_ids': list_ids, 'products_most_vist': products_most_vist
+            'products_most_vist': products_most_vist
         })
+
+

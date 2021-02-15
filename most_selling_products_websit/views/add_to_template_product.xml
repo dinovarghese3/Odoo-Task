@@ -1,14 +1,15 @@
 <odoo>
   <data>
-  <record id="product_video_pos" model="ir.ui.view">
-    <field name="name">Product.qnt.pos</field>
-    <field name="model">product.template</field>
-    <field name="inherit_id" ref="product.product_template_only_form_view"/>
-    <field name="arch" type="xml">
-      <field name="l10n_in_hsn_description" position="after">
-        <field name="sold_qty" />
-      </field>
-    </field>
-  </record>
+<!--  <record id="product_video_pos" model="ir.ui.view">-->
+<!--    <field name="name">Product.qnt.pos</field>-->
+<!--    <field name="model">product.template</field>-->
+<!--    <field name="inherit_id" ref="product.product_template_only_form_view"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--      <field name="l10n_in_hsn_description" position="after">-->
+<!--        <field name="sold_qty" invisible />-->
+<!--        <field name="no_of_view"/>-->
+<!--      </field>-->
+<!--    </field>-->
+<!--  </record>-->
   </data>
 </odoo>

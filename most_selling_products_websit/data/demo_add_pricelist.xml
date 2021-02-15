@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="rent_vehicle" model="product.pricelist">
+            <field name="name">CompanyPriceList</field>
+<!--            <field name="currency_id" >'self.env.user.company_id.currency_id'</field>-->
+<!--            <field name="company_id">1</field>-->
+            <field name="sequence">1</field>
+            <field name="selectable">1</field>
+        </record>
+    </data>
+</odoo>

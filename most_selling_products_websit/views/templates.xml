@@ -12,7 +12,7 @@
                         <div class="product_details">
                             <center>
                                 <t t-if="website_most_selle_product_ids">
-                                <h3>Top Selling Products</h3>
+                                    <h3>TOP SELLING PRODUCTS</h3>
                                 </t>
                             </center>
                         </div>
@@ -21,105 +21,122 @@
                              style="overflow: hidden;">
                             <t t-foreach="website_most_selle_product_ids"
                                t-as="website_product_id">
-                                <div class="col-md-3 col-sm-4 col-xs-12"
-                                     style="padding:1px 1px 1px 1px;">
-                                    <a t-attf-href="/shop/product/#{ slug(website_product_id) }">
-                                        <div style="border: 1px solid #f0eaea;width: 150px;height: auto;padding: 7% 0% 10% 0%;
-                                    border-radius: 3px;overflow: hidden;
-                                    margin-bottom: 44px !important;width: 100%;height: 100%;">
-                                            <div class="oe_product_image">
-                                                <center>
-                                                    <div style="width:100%; height:145px;overflow: hidden;">
-                                                        <img t-if="website_product_id.image_1920"
-                                                             t-attf-src="/web/image/product.template/#{website_product_id.id}/image_1920"
-                                                             class="img oe_product_image"
-                                                             style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
-                                                    </div>
-                                                    <div style="text-align: left;margin: 10px 15px 3px 15px;">
+                                <div class="col-md-3 col-sm-3 col-xs-12"
+                                     style="padding:6px 6px 6px 6px;">
+                                    <form action="/shop/cart/update"
+                                          method="post"
+                                          class="card oe_product_cart"
+                                          itemscope="itemscope"
+                                          itemtype="http://schema.org/Product"
+                                          data-publish="on">
+                                        <br/>
+                                        <center>
+                                            <div style="width:100%; height:155px;overflow: hidden;">
+                                                <a t-attf-href="/shop/product/#{ slug(website_product_id) }">
+                                                    <!--                                                   <img t-if="website_product_id.image"-->
+                                                    <img t-attf-src="/web/image?model=product.template&amp;field=image_1920&amp;id=#{website_product_id.id}"
+                                                         class="img img-fluid"
+                                                         style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
+                                                </a>
 
-                                                        <t t-if="website_product_id.name">
-                                                            <center><span t-esc="website_product_id.id"
-                                                                  style="font-weight: bolder;color: #3e3b3b;"/></center>
-                                                            <br/>
-                                                        </t>
-                                                        <!--                                                        <t t-if="website_product_id.name">-->
-                                                        <!--                                                            <span t-esc="website_product_id.currency_id.symbol"-->
-                                                        <!--                                                                  style="color:black"/>-->
-                                                        <!--                                                            <span t-esc="website_product_id.list_price"-->
-                                                        <!--                                                                  style="font-weight: bolder;color: #3e3b3b;"/>-->
-                                                        <!--                                                            <br/>-->
-                                                        <!--                                                        </t>-->
-
-                                                    </div>
-                                                    <a style="background-color: #666699;color: white;width: 76%;left: 12%;
-                                                                                               height: 39px;display: block;padding: 11px 1px 1px 1px;font-size: 11px;
-                                                                                               border-radius: 3px;margin-top: 10px;text-decoration: none;
-                                                                                               position: absolute;bottom: 15px;"
-                                                       t-attf-href="/shop/product/#{ slug(website_product_id) }">
-                                                        <h6>Buy</h6>
-                                                    </a>
-                                                </center>
                                             </div>
+                                        </center>
+                                        <br/>
+                                        <div class="card-body p-0 text-center o_wsale_product_information">
+                                            <div class="p-2 o_wsale_product_information_text">
+                                                <h6 class="o_wsale_products_item_title">
+                                                    <a data-oe-model="product.template"
+                                                       data-oe-id="website_product_id.id"
+                                                       data-oe-field="website_product_id.name"
+                                                       data-oe-type="char"
+                                                       data-oe-expression="product.name"
+                                                       itemprop="name"
+                                                       data-oe-field-xpath="/t[1]/form[1]/div[2]/div[1]/h6[1]/a[1]"
+                                                       t-attf-href="/shop/product/#{ slug(website_product_id) }"
+                                                       content="website_product_id.name"><t
+                                                            t-esc="website_product_id.name"/></a>
+                                                </h6>
+                                                <h6 class="o_wsale_products_item_title">
+                                                    <span t-esc="website_product_id.currency_id.symbol"
+                                                          style="color:black"/>
+                                                    <t t-esc="website_product_id.list_price"/>
+
+                                                </h6>
+                                            </div>
+
                                         </div>
-                                    </a>
+                                    </form>
                                 </div>
                             </t>
                         </div>
+
+
                         <br/><br/>
                         <div class="product_details">
                             <center>
-                                <h3>Most Viewed Products </h3>
+                                <t t-if="products_most_vist">
+                                    <h3>MOST VIEWED PRODUCTS</h3>
+                                </t>
                             </center>
                         </div>
-                        <br/><br/>
+                        <br/>
                         <div class="oe_product_cart_new row"
                              style="overflow: hidden;">
-                            <t t-foreach="products_most_vist" t-as="website_product_id">
-                                <div class="col-md-3 col-sm-4 col-xs-12"
-                                     style="padding:1px 1px 1px 1px;">
-                                    <a t-attf-href="/shop/product/#{ slug(website_product_id) }">
-                                        <div style="border: 1px solid #f0eaea;width: 150px;height: auto;padding: 7% 0% 10% 0%;
-                                    border-radius: 3px;overflow: hidden;
-                                    margin-bottom: 44px !important;width: 100%;height: 100%;">
-                                            <div class="oe_product_image">
-                                                <center>
-                                                    <div style="width:100%; height:145px;overflow: hidden;">
-                                                        <img t-if="website_product_id.image_1920"
-                                                             t-attf-src="/web/image/product.template/#{website_product_id.id}/image_1920"
-                                                             class="img oe_product_image"
-                                                             style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
-                                                        <span t-esc="website_product_id.name"></span>
-                                                    </div>
-                                                    <div style="text-align: left;margin: 10px 15px 3px 15px;">
+                            <t t-foreach="products_most_vist"
+                               t-as="website_product_id">
+                                <div class="col-md-3 col-sm-3 col-xs-12"
+                                     style="padding:6px 6px 6px 6px;">
+                                    <form action="/shop/cart/update"
+                                          method="post"
+                                          class="card oe_product_cart"
+                                          itemscope="itemscope"
+                                          itemtype="http://schema.org/Product"
+                                          data-publish="on">
+                                        <br/>
+                                        <center>
+                                            <div style="width:100%; height:155px;overflow: hidden;">
+                                                <a t-attf-href="/shop/product/#{ slug(website_product_id) }">
+                                                    <!--                                                   <img t-if="website_product_id.image"-->
+                                                    <img t-attf-src="/web/image?model=product.template&amp;field=image_1920&amp;id=#{website_product_id.id}"
+                                                         class="img img-fluid"
+                                                         style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
+                                                </a>
 
-                                                        <t t-if="website_product_id.name">
-                                                            <center><span t-esc="website_product_id.name"
-                                                                  style="font-weight: bolder;color: #3e3b3b;"/></center>
-                                                            <br/>
-                                                        </t>
-                                                        <!--                                                        <t t-if="website_product_id.name">-->
-                                                        <!--                                                            <span t-esc="website_product_id.currency_id.symbol"-->
-                                                        <!--                                                                  style="color:black"/>-->
-                                                        <!--                                                            <span t-esc="website_product_id.list_price"-->
-                                                        <!--                                                                  style="font-weight: bolder;color: #3e3b3b;"/>-->
-                                                        <!--                                                            <br/>-->
-                                                        <!--                                                        </t>-->
+                                            </div>
+                                        </center>
+                                        <br/>
+                                        <div class="card-body p-0 text-center o_wsale_product_information">
+                                            <div class="p-2 o_wsale_product_information_text">
+                                                <h6 class="o_wsale_products_item_title">
+                                                    <a data-oe-model="product.template"
+                                                       data-oe-id="website_product_id.id"
+                                                       data-oe-field="website_product_id.name"
+                                                       data-oe-type="char"
+                                                       data-oe-expression="product.name"
+                                                       itemprop="name"
+                                                       data-oe-field-xpath="/t[1]/form[1]/div[2]/div[1]/h6[1]/a[1]"
+                                                       t-attf-href="/shop/product/#{ slug(website_product_id) }"
+                                                       content="website_product_id.name"><t
+                                                            t-esc="website_product_id.name"/></a>
 
-                                                    </div>
-                                                    <a style="background-color: #666699;color: white;width: 76%;left: 12%;
-                                                                                               height: 39px;display: block;padding: 11px 1px 1px 1px;font-size: 11px;
-                                                                                               border-radius: 3px;margin-top: 10px;text-decoration: none;
-                                                                                               position: absolute;bottom: 15px;"
-                                                       t-attf-href="/shop/product/#{ slug(website_product_id) }"><h6>
-                                                        Buy</h6>
-                                                    </a>
-                                                </center>
+                                                </h6>
+
+
+                                                <h6 class="o_wsale_products_item_title">
+                                                    <span t-esc="website_product_id.currency_id.symbol"
+                                                          style="color:black"/>
+                                                    <t t-esc="website_product_id.list_price"/>
+
+                                                </h6>
                                             </div>
                                         </div>
-                                    </a>
+
+
+                                    </form>
                                 </div>
                             </t>
                         </div>
+
                     </section>
                     <br/>
                     <hr class="border-600 s_hr_1px w-100 mx-auto s_hr_dotted"/>
