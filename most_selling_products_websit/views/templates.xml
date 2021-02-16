@@ -60,17 +60,13 @@
                                                     <span t-esc="website_product_id.currency_id.symbol"
                                                           style="color:black"/>
                                                     <t t-esc="website_product_id.list_price"/>
-
                                                 </h6>
                                             </div>
-
                                         </div>
                                     </form>
                                 </div>
                             </t>
                         </div>
-
-
                         <br/><br/>
                         <div class="product_details">
                             <center>
@@ -101,7 +97,6 @@
                                                          class="img img-fluid"
                                                          style="padding: 0px; margin: 0px; width:auto; height:100%;"/>
                                                 </a>
-
                                             </div>
                                         </center>
                                         <br/>
@@ -118,25 +113,18 @@
                                                        t-attf-href="/shop/product/#{ slug(website_product_id) }"
                                                        content="website_product_id.name"><t
                                                             t-esc="website_product_id.name"/></a>
-
                                                 </h6>
-
-
                                                 <h6 class="o_wsale_products_item_title">
                                                     <span t-esc="website_product_id.currency_id.symbol"
                                                           style="color:black"/>
                                                     <t t-esc="website_product_id.list_price"/>
-
                                                 </h6>
                                             </div>
                                         </div>
-
-
                                     </form>
                                 </div>
                             </t>
                         </div>
-
                     </section>
                     <br/>
                     <hr class="border-600 s_hr_1px w-100 mx-auto s_hr_dotted"/>

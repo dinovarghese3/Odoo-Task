@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="leave_request_portal" name="Leave Request website">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <br/>
+                    <center><h3>Sale Order Details</h3></center>
+                    <table>
+                        <tr>
+                            <td>
+                                From Date
+                            </td>
+                            <td>
+                                To Date
+                            </td>
+                            <td>
+                                Type
+                            </td>
+                            <td>
+                                Duration
+                            </td>
+                        </tr>
+                        <t t-foreach="all_leaves" t-as="leaves">
+                            <tr>
+                                <td>
+                                    <t t-esc="leaves.request_date_from"/>
+                                </td>
+                                <td>
+                                    <t t-esc="leaves.request_date_to"/>
+                                </td>
+                                <td>
+                                    <t t-esc="leaves.holiday_status_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="leaves.number_of_days"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
