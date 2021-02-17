@@ -7,36 +7,70 @@
                 <div class="container">
                     <br/>
                     <center><h3>Sale Order Details</h3></center>
-                    <table>
-                        <tr>
-                            <td>
-                                From Date
-                            </td>
-                            <td>
-                                To Date
-                            </td>
-                            <td>
-                                Type
-                            </td>
-                            <td>
-                                Duration
-                            </td>
-                        </tr>
-                        <t t-foreach="all_leaves" t-as="leaves">
+
+                    <a href="/leave/request" style="color:white"><button
+                            type="object"
+                            class="btn btn-secondary">
+                        Request
+                    </button>
+                    </a>
+
+                    <br/><br/>
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>
-                                    <t t-esc="leaves.request_date_from"/>
-                                </td>
-                                <td>
-                                    <t t-esc="leaves.request_date_to"/>
-                                </td>
-                                <td>
-                                    <t t-esc="leaves.holiday_status_id.name"/>
-                                </td>
-                                <td>
-                                    <t t-esc="leaves.number_of_days"/>
-                                </td>
+                                <th scope="col">
+                                    Leave Type
+                                </th>
+                                <th scope="col">
+                                    Description
+                                </th>
+                                <th scope="col">
+                                    Start Date
+                                </th>
+                                <th scope="col">
+                                    End Date
+                                </th>
+
+                                <th scope="col">
+                                    Duration
+                                </th>
+                                <th scope="col">
+                                    State
+                                </th>
                             </tr>
+                        </thead>
+                        <t t-foreach="all_leaves" t-as="leaves">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <t t-esc="leaves.holiday_status_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="leaves.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="leaves.request_date_from"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="leaves.request_date_to"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="leaves.number_of_days"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="leaves.state == 'validate'">
+                                            <t>Approved</t>
+                                        </t>
+                                        <t t-if="leaves.state == 'confirm'">
+                                            <t>To Approve</t>
+                                            <button type="object"
+                                                    class="btn btn-secondary">
+                                                Cancel</button>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </t>
                     </table>
 

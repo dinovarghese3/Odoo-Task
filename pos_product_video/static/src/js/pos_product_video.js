@@ -12,7 +12,8 @@ odoo.define('pos_product_video.pos_product_video', function(require) {
     console.log("wrk");
     const PosProductVideo = ProductItem => class extends ProductItem{
 
-        playVideo(ev){
+        playVieo(ev){
+
             ev.stopPropagation();
             console.log(ev)
             console.log(this.props.product.product_video_url)

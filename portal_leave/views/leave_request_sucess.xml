@@ -1,0 +1,16 @@
+<odoo>
+<template id="leave_request_form_success" name="leave form created">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container">
+                    <div class="col-md-12">
+                        <hr/><hr/>
+                        <div class="alert alert-success">
+                            Leave created successfully.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
