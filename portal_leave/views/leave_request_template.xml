@@ -56,7 +56,7 @@
                     <br/><br/>
 
                     <div class="row">
-                        <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                        <div class="col-lg-8 col-xl-7 mr-lg-auto">
                             <div class="oe_structure" data-oe-model="ir.ui.view"
                                  data-oe-id="1874" data-oe-field="arch"
                                  data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
@@ -95,7 +95,8 @@
                                                             <!--                                                                   name="leave_type"-->
                                                             <!--                                                                   required=""/>-->
                                                             <select name="leave_type"
-                                                                    class="form-control s_website_form_input">
+                                                                    class="form-control s_website_form_input"
+                                                                    id="leave_type_time_off_from_other_model">
                                                                 <t t-foreach="leave_type"
                                                                    t-as="each">
                                                                     <option>
@@ -110,44 +111,103 @@
                                                 <div class="form-group col-12 s_website_form_field s_website_form_required"
                                                      data-type="email"
                                                      data-name="Field">
-                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                                    <div class="form-row">
+                                                        <label class="col-form-label col-md-3.5"
                                                                style="width: 200px"
                                                                for="contact3">
                                                             <span class="s_website_form_label_content">
-                                                                Start
-                                                                Date</span>
+                                                                Dates</span>
                                                             <span class="s_website_form_mark">
                                                                 *</span>
                                                         </label>
-                                                        <div class="col-sm">
-                                                            <input id="contact3"
+
+                                                        <span class="form-group col-md-4">
+                                                            <input id="start_date_leave"
                                                                    type="date"
-                                                                   class="form-control s_website_form_input"
+                                                                   class="form-control "
                                                                    name="start_date"
                                                                    required=""/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-12 s_website_form_field s_website_form_required"
-                                                     data-type="email"
-                                                     data-name="Field">
-                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                        <label class="col-form-label col-sm-auto s_website_form_label"
-                                                               style="width: 200px"
-                                                               for="contact3">
-                                                            <span class="s_website_form_label_content">
-                                                                End Date</span>
-                                                            <span class="s_website_form_mark">
-                                                                *</span>
-                                                        </label>
-                                                        <div class="col-sm">
-                                                            <input id="contact3"
+                                                        </span>
+                                                        <span class="form-group col-md-4">
+                                                            <input id="end_date_leave"
                                                                    type="date"
-                                                                   class="form-control s_website_form_input"
+                                                                   class="form-control "
                                                                    name="end_date"
                                                                    required=""/>
-                                                        </div>
+                                                            <select class="form-control s_website_form_input"
+                                                                    id="time_period">
+                                                                <option>
+                                                                    Afternoon</option>
+                                                                <option>
+                                                                    Morning</option>
+                                                            </select>
+                                                        </span>
+                                                        <span class="form-group col-md-auto">
+                                                            <!--                                                            <input id="end_date_leave"-->
+                                                            <!--                                                                   type="date"-->
+                                                            <!--                                                                   class="form-control "-->
+                                                            <!--                                                                   name="date_type"-->
+                                                            <!--                                                                   required=""/>-->
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!--                                                <div class="form-group col-12 s_website_form_field s_website_form_required"-->
+                                                <!--                                                     data-type="email"-->
+                                                <!--                                                     data-name="Field">-->
+                                                <!--                                                    <div class="row s_col_no_resize s_col_no_bgcolor"  >-->
+                                                <!--                                                        <label class="col-form-label col-sm-auto s_website_form_label"-->
+                                                <!--                                                               style="width: 200px"-->
+                                                <!--                                                               for="contact3">-->
+                                                <!--                                                            <span class="s_website_form_label_content" id ="end_date_label">-->
+                                                <!--                                                                End Date</span>-->
+                                                <!--                                                        </label>-->
+                                                <!--                                                        <div class="col-sm">-->
+                                                <!--                                                            <input id="end_date_leave"-->
+                                                <!--                                                                   type="date"-->
+                                                <!--                                                                   class="form-control s_website_form_input"-->
+                                                <!--                                                                   name="end_date"-->
+                                                <!--                                                                   required=""/>-->
+                                                <!--                                                        </div>-->
+                                                <!--                                                    </div>-->
+                                                <!--                                                </div>-->
+                                                <div class="form-group col-12 s_website_form_field s_website_form_required">
+                                                    <div class="form-row">
+                                                        <label class="col-form-label col-md-3.5"
+                                                               style="width: 200px"
+                                                               for="contact3">
+                                                            <span class="s_website_form_label_content"
+                                                                  id="leave_type_time_off_label">
+                                                                Dates</span>
+
+                                                        </label>
+                                                        <span class=" col-md-4"
+                                                              id="leave_type_time_off_from">
+                                                            From
+                                                            <select name="leave_type"
+                                                                    class="form-control">
+                                                                <t t-foreach="request_hour_from"
+                                                                   t-as="each">
+                                                                    <option>
+                                                                        <t t-esc="each[1]"/>
+                                                                    </option>
+                                                                </t>
+                                                            </select>
+                                                        </span>
+                                                        <span class=" col-md-4"
+                                                              id="leave_type_time_off_to">
+                                                            To
+                                                            <select name="leave_type"
+                                                                    class="form-control"
+                                                            >
+                                                                <t t-foreach="request_hour_from"
+                                                                   t-as="each">
+                                                                    <option>
+                                                                        <t t-esc="each[1]"/>
+                                                                    </option>
+                                                                </t>
+                                                            </select>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-12 s_website_form_field s_website_form_required"
@@ -157,17 +217,17 @@
                                                         <label class="col-form-label col-sm-auto s_website_form_label"
                                                                style="width: 200px"
                                                                for="contact3">
-                                                            <span class="s_website_form_label_content">
+                                                            <span class="s_website_form_label_content"
+                                                                  id="duration_leave_label">
                                                                 Duration</span>
                                                             <span class="s_website_form_mark">
                                                             </span>
                                                         </label>
                                                         <div class="col-sm">
-                                                            <input id="contact3"
+                                                            <input id="duration"
                                                                    type="number"
                                                                    class="form-control s_website_form_input"
                                                                    name="duration"
-                                                                   required=""
                                                                    readonly="True"/>
                                                         </div>
                                                     </div>
@@ -176,25 +236,39 @@
                                                 <div class="form-group col-12 s_website_form_field s_website_form_required"
                                                      data-type="char"
                                                      data-name="Field">
-                                                    <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                        <t t-if="request_unit_half">
+                                                    <div class="form-row"
+                                                         id="half_day_leave_type" style="margin-left:30%">
 
-                                                            <label class="col-form-label col-sm-auto s_website_form_label"
-                                                                   for="contact5">
-                                                                <span class="s_website_form_label_content">
-                                                                    Half
-                                                                    Day</span>
+                                                        <label class="col-md-3"
+                                                               for="contact5">
+                                                            <span class="s_website_form_label_content">
+                                                                Half
+                                                                Day</span>
 
-                                                            </label>
-                                                            <div class="col-sm">
-                                                                <input id="contact5"
-                                                                       type="checkbox"
-                                                                       name="half_day"
-                                                                       style="width:20%;height:50%;margin-left:18%;"/>
-                                                            </div>
-                                                        </t>
+                                                        </label>
+                                                        <div class="col-md-1">
+                                                            <input id="half_day"
+                                                                   type="checkbox"
+                                                                   name="half_day"
+                                                                   style="width:50%;height:50%;margin-left:18%;"/>
+                                                        </div>
+
+                                                        <label class="col-md-4"
+                                                               for="contact5">
+                                                            <span class="s_website_form_label_content">
+                                                                Custom
+                                                                Hours</span>
+
+                                                        </label>
+                                                        <div class="col-md-1">
+                                                            <input id="custom_hours"
+                                                                   type="checkbox"
+                                                                   name="custom_hours"
+                                                                   style="width:50%;height:50%;margin-left:18%;"/>
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group col-12 s_website_form_field s_website_form_custom s_website_form_required"
                                                      data-type="text"
                                                      data-name="Field">
@@ -222,6 +296,16 @@
                                                             class="btn btn-primary btn-lg ">
                                                         Submit</button>
                                                     <span id="s_website_form_result"></span>
+                                                    <center>
+                                                        <br/><br/>
+                                                        <div>
+                                                            <t t-if="alert_date">
+                                                                <div class="alert alert-danger">
+                                                                    <t t-esc="alert_date"/>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </center>
                                                 </div>
                                             </div>
                                         </form>
@@ -238,5 +322,6 @@
                 </div>
             </div>
         </t>
+
     </template>
 </odoo>

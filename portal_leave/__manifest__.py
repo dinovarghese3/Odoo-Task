@@ -23,6 +23,7 @@
         'views/templates.xml',
         'views/leave_request_template.xml',
         'views/leave_request_sucess.xml',
+        'views/link_js_website.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

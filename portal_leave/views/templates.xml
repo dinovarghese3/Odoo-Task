@@ -64,9 +64,12 @@
                                         </t>
                                         <t t-if="leaves.state == 'confirm'">
                                             <t>To Approve</t>
-                                            <button type="object"
-                                                    class="btn btn-secondary">
-                                                Cancel</button>
+                                            <a href="/leave/delete">
+                                                <button type="object"
+                                                        class="btn btn-secondary"
+                                                >
+                                                    Cancel</button>
+                                            </a>
                                         </t>
                                     </td>
                                 </tr>
