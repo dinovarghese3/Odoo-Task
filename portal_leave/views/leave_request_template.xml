@@ -133,12 +133,12 @@
                                                                    type="date"
                                                                    class="form-control "
                                                                    name="end_date"
-                                                                   required=""/>
+                                                                   />
                                                             <select class="form-control s_website_form_input"
                                                                     id="time_period">
-                                                                <option>
+                                                                <option value="am">
                                                                     Afternoon</option>
-                                                                <option>
+                                                                <option value="pm">
                                                                     Morning</option>
                                                             </select>
                                                         </span>
@@ -185,11 +185,11 @@
                                                               id="leave_type_time_off_from">
                                                             From
                                                             <select name="leave_type"
-                                                                    class="form-control">
+                                                                    class="form-control" id="">
                                                                 <t t-foreach="request_hour_from"
-                                                                   t-as="each">
+                                                                   t-as="each" id="leave_type_to" name="leave_type_to">
                                                                     <option>
-                                                                        <t t-esc="each[1]"/>
+                                                                        <t t-esc="each[1]" value="each[0]"/>
                                                                     </option>
                                                                 </t>
                                                             </select>
@@ -198,12 +198,11 @@
                                                               id="leave_type_time_off_to">
                                                             To
                                                             <select name="leave_type"
-                                                                    class="form-control"
-                                                            >
+                                                                    class="form-control" id="leave_type_from" >
                                                                 <t t-foreach="request_hour_from"
-                                                                   t-as="each">
+                                                                   t-as="each" name="leave_type_from">
                                                                     <option>
-                                                                        <t t-esc="each[1]"/>
+                                                                        <t t-esc="each[1]" value="each[0]"/>
                                                                     </option>
                                                                 </t>
                                                             </select>

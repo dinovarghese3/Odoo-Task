@@ -1,27 +1,44 @@
 # -*- coding: utf-8 -*-
+
 from odoo import http, fields
 from odoo.http import request
+from odoo.addons.website_sale.controllers.main import QueryURL
 
 
 class PortalLeave(http.Controller):
     @http.route('/leave', auth='public', website=True)
     def index(self, **kw):
-        all_leaves = request.env['hr.leave'].sudo().search([])
-        print(all_leaves)
-        return request.render('portal_leave.leave_request_portal',
-                              {'all_leaves': all_leaves})
+        """ Showing All the leaves created """
 
-    @http.route('/leave/delete', auth='public', website=True)
-    def _onclick_delete(self, **kw):
-        print(self)
-        request.env['hr.leave'].sudo().search([()]).unlink()
-        # return request.render("Hi")
-        # return super(hr_leave, self).unlink()
+        all_leaves = request.env['hr.leave'].sudo().search(
+            [('user_id', '=', request.env.uid)])
+        print(all_leaves)
+        keep = QueryURL()
+        print("LLL", keep)
+        values = {}
+        return request.render('portal_leave.leave_request_portal',
+                              {'all_leaves': all_leaves, 'keep': keep})
+
+    @http.route('/leave/delete', auth='public', type='http', website=True,
+                csrf=False)
+    def _onclick_delete(self, id=None, **kw):
+        """ Cancel button Click """
+        if id:
+            print(id)
+            request.env['hr.leave'].sudo().search(
+                [('id', '=', id)]).unlink()
+        vals = "Record Deleted"
+        return request.render('portal_leave.leave_request_form_success',
+                              {'vals': vals})
+
+
+""" Leave Request Creation Form Class"""
 
 
 class RequestLeave(http.Controller):
     @http.route('/leave/request', auth='public', website=True)
     def index(self, **kw):
+        """ Leave request Creation Form"""
         leave_type = request.env['hr.leave.type'].sudo().search([])
         # custom_hour=request.env['hr.leave'].sudo().search([])
         request_hour_from = [
@@ -63,8 +80,13 @@ class RequestLeave(http.Controller):
     @http.route('/leave/request/submit', type='http', auth='public',
                 website=True, csrf=False)
     def leave_request_submition(self, **post):
-        current_user = request.env['res.users'].sudo().search(
-            [('id', '=', http.request.env.context.get('uid'))])
+        """ Submit Button Press. Create a leave """
+        curent = fields.Many2one('hr.employee', "current_user",
+                                 default=lambda self: self.env.user)
+        print(curent)
+        current_user = request.env['hr.employee'].sudo().search(
+            [('user_id', '=', request.env.uid)])
+        print(current_user.name)
         leave_type = request.env['hr.leave.type'].sudo().search([])
         print(current_user.name)
         print(current_user)
@@ -76,27 +98,45 @@ class RequestLeave(http.Controller):
             [('name', '=', post.get('leave_type'))])
         print(leave_id.id)
         if post.get('half_day'):
+            duration = 0
             end_date = post.get('start_date')
         else:
-            end_date=post.get('end_date')
-        if post.get('start_date') and post.get('start_date') and post.get(
-                'start_date') < post.get(
-            'end_date'):
-            leave_request = request.env['hr.leave'].create({
+            end_date = post.get('end_date')
+        if post.get('#custom_hours'):
+            print("hai", post.get('#leave_type_to'))
+            print(post.get('#leave_type_from'))
+            duration = 0
+            end_date = post.get('start_date')
+        else:
+            duration = post.get('#duration')
+        print(end_date)
+        print(post.get('start_date'))
+        if not end_date:
+            end_date = post.get('start_date')
+        if (post.get('start_date') and end_date and post.get(
+                'start_date') <= end_date) or post.get('#custom_hours'):
+            leave_request = request.env['hr.leave'].sudo().create({
                 'holiday_status_id': leave_id.id,
                 'request_date_from': post.get('start_date'),
-                'request_date_to': end_date,
+                'request_date_to': post.get('start_date'),
+                'number_of_days': duration,
                 'name': post.get('description'),
-                'request_unit_half':post.get('half_day'),
+                'request_date_from_period': post.get('#time_period'),
+                'request_unit_hours': post.get('custom_hours'),
+                'request_unit_half': post.get('half_day'),
+                'request_hour_from': post.get('#leave_type_from'),
+                'request_hour_to': post.get('#leave_type_to'),
                 'employee_id': current_user.id,
-                'holiday_type': "employee"
-
+                'holiday_type': "employee",
+                'department_id': current_user.department_id.id,
             })
             print(leave_request)
-            vals = {'leave_request': leave_request, }
-            print(vals)
+            # vals = {'leave_request': leave_request, }
+            # print(vals)
+            vals = " Leave Created"
             return request.render('portal_leave.leave_request_form_success',
-                                  vals)
+                                  {'vals': vals,
+                                   'leave_request': leave_request})
         else:
             alert_date = "Start Date must be lesser than End date"
             return request.render('portal_leave.request_leave_apply',

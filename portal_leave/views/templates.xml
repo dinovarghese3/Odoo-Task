@@ -6,7 +6,7 @@
             <div class="oe_structure">
                 <div class="container">
                     <br/>
-                    <center><h3>Sale Order Details</h3></center>
+                    <center><h3>Employe Leaves</h3></center>
 
                     <a href="/leave/request" style="color:white"><button
                             type="object"
@@ -59,12 +59,12 @@
                                         <t t-esc="leaves.number_of_days"/>
                                     </td>
                                     <td>
-                                        <t t-if="leaves.state == 'validate'">
+                                        <t t-if ="leaves.state =='validate' ">
                                             <t>Approved</t>
                                         </t>
                                         <t t-if="leaves.state == 'confirm'">
                                             <t>To Approve</t>
-                                            <a href="/leave/delete">
+                                            <a t-att-href="keep('/leave/delete/',id=leaves.id)">
                                                 <button type="object"
                                                         class="btn btn-secondary"
                                                 >

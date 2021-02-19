@@ -6,7 +6,7 @@
                     <div class="col-md-12">
                         <hr/><hr/>
                         <div class="alert alert-success">
-                            Leave created successfully.
+                            <t t-esc="vals"/>
                         </div>
                     </div>
                 </div>
