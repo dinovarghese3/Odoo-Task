@@ -56,12 +56,26 @@
                                         <t t-esc="leaves.request_date_to"/>
                                     </td>
                                     <td>
-                                        <t t-esc="leaves.number_of_days"/>
+                                        <t t-if="leaves.request_unit_hours or leaves.request_unit_half">
+                                            <t t-esc="leaves.number_of_days"/>
+                                            <t>Hours</t>
+                                        </t>
+                                        <t t-if="leaves.request_unit_hours != True and leaves.request_unit_half != True">
+                                            <t t-esc="leaves.number_of_days"/>
+                                            <t>Days</t>
+                                        </t>
                                     </td>
                                     <td>
                                         <t t-if ="leaves.state =='validate' ">
                                             <t>Approved</t>
                                         </t>
+                                        <t t-if="leaves.state =='validate1'" >
+                                            <t>Second Approved</t>
+                                        </t>
+                                        <t t-if="leaves.state =='refuse'" >
+                                            <t>Rejected</t>
+                                        </t>
+
                                         <t t-if="leaves.state == 'confirm'">
                                             <t>To Approve</t>
                                             <a t-att-href="keep('/leave/delete/',id=leaves.id)">
