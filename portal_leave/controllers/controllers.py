@@ -25,7 +25,7 @@ class PortalLeave(http.Controller):
     def _onclick_delete(self, id=None):
         """ Cancel button Click """
         if id:
-            # id from Url
+            # id of leave request from Url
             # print(id)
             request.env['hr.leave'].sudo().search(
                 [('id', '=', id)]).unlink()

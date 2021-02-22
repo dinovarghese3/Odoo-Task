@@ -3,7 +3,7 @@ odoo.define('portal_leave.leave_form_frontend', function(require) {
     $('#half_day_leave_type').hide();
     $('#time_period').hide()
     $('#leave_type_time_off_from,#leave_type_time_off_to,#leave_type_time_off_label').hide();
-    console.log("Hai")
+//    console.log("Hai")
     $('#leave_type_time_off_from_other_model').change(function(){
 
         if (($('#leave_type_time_off_from_other_model').val() == 'Compensatory Days')||($('#leave_type_time_off_from_other_model').val() == 'Unpaid')){
@@ -32,7 +32,7 @@ odoo.define('portal_leave.leave_form_frontend', function(require) {
 
     });
 
-//  Checking thr half_day check box is checked or not if checked end date,duration hided and time peroid enabled
+//  Checking  half_day check box is checked or not if checked end date,duration hide and time period enabled
     $('input[id="half_day"]').click(function(){
             if($(this).prop("checked") == true){
                 console.log("Checkbox is checked.");
