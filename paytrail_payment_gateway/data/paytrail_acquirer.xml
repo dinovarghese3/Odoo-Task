@@ -6,19 +6,16 @@
         <field name="name">Paytrail</field>
         <field name="sequence">1</field>
         <field name="provider">paytrail</field>
-        <field name="image_128" type="base64" file="paytrail_gateway_ecommers/static/src/img/paytrail_icon.png"/>
+
 
         <field name="company_id" ref="base.main_company"/>
         <field name="description" type="html">
             <p>
-                Paytrail is the easiest way to accept payments via Paytrail or
-                credit cards.
+                Paytrail is the easiest way to accept payments via Paytrail or credit cards.
             </p>
             <ul class="list-inline">
-                <li class="list-inline-item"><i class="fa fa-check"/>Online
-                    Payment</li>
-                <li class="list-inline-item"><i class="fa fa-check"/>Payment
-                    Status Tracking</li>
+                <li class="list-inline-item"><i class="fa fa-check"/>Online Payment</li>
+                <li class="list-inline-item"><i class="fa fa-check"/>Payment Status Tracking</li>
             </ul>
         </field>
         <field name="payment_icon_ids" eval='[(6, 0, [ref("payment.payment_icon_cc_maestro"),
@@ -30,6 +27,8 @@
                                                         ref("payment.payment_icon_cc_unionpay"),
                                                         ref("payment.payment_icon_cc_visa")])]'/>
     </record>
+
+
 
 
 </odoo>

@@ -70,7 +70,7 @@ class WebsiteSort(Home):
              ('product_id', '!=', False)])
         print("product visit", products_vist)
         for pro in products_vist:
-            print(pro)
+            # print(pro)
             pro.product_id.no_of_view = pro.product_id.no_of_view + 1
 
         website_most_selle_product_ids = request.env[
@@ -81,7 +81,7 @@ class WebsiteSort(Home):
         products_most_vist = request.env['product.template'].sudo().search(
             [('is_published', '=', True),
              ('no_of_view', '>', 0)], order='no_of_view desc', limit=8)
-        print(products_most_vist)
+        # print(products_most_vist)
         for each in products_most_vist:
             each.most_visited = True
 
