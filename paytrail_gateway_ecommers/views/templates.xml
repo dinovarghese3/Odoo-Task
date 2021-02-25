@@ -1,16 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="paytrail_form">
-        <div>
-            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
-            <input type="hidden" name="MID" t-att-value='MID'/>
-            <input type="hidden" name="URL_SUCCESS" t-att-value='url_success'/>
-            <input type="hidden" name="URL_CANCEL" t-att-value='url_cancel'/>
-            <input type="hidden" name="order_number" t-att-value='order_number'/>
-            <input type="hidden" name="params_in" t-att-value='params_in'/>
-            <input type="hidden" name="params_out" t-att-value='params_out'/>
-            <input type="hidden" name="amount" t-att-value='amount'/>
-            <input type="hidden" name="locale" t-att-value='locale'/>
-        </div>
+        <form action="https://payment.paytrail.com/e2" method="post">
+            <input name="MID" type="hidden" value="13466"/>
+            <input name="URL_SUCCESS" type="hidden"
+                   value="http://www.example.com/success"/>
+            <input name="URL_CANCEL" type="hidden"
+                   value="http://www.example.com/cancel"/>
+            <input name="ORDER_NUMBER" type="hidden" value="123456"/>
+            <input name="PARAMS_IN" type="hidden"
+                   value="MERCHANT_ID,URL_SUCCESS,URL_CANCEL,ORDER_NUMBER,PARAMS_IN,PARAMS_OUT,ITEM_TITLE[0],ITEM_ID[0],ITEM_QUANTITY[0],ITEM_UNIT_PRICE[0],ITEM_VAT_PERCENT[0],ITEM_DISCOUNT_PERCENT[0],ITEM_TYPE[0],ITEM_TITLE[1],ITEM_ID[1],ITEM_QUANTITY[1],ITEM_UNIT_PRICE[1],ITEM_VAT_PERCENT[1],ITEM_DISCOUNT_PERCENT[1],ITEM_TYPE[1],MSG_UI_MERCHANT_PANEL,URL_NOTIFY,LOCALE,CURRENCY,REFERENCE_NUMBER,PAYMENT_METHODS,PAYER_PERSON_PHONE,PAYER_PERSON_EMAIL,PAYER_PERSON_FIRSTNAME,PAYER_PERSON_LASTNAME,PAYER_COMPANY_NAME,PAYER_PERSON_ADDR_STREET,PAYER_PERSON_ADDR_POSTAL_CODE,PAYER_PERSON_ADDR_TOWN,PAYER_PERSON_ADDR_COUNTRY,VAT_IS_INCLUDED,ALG"/>
+            <input name="PARAMS_OUT" type="hidden"
+                   value="ORDER_NUMBER,PAYMENT_ID,AMOUNT,CURRENCY,PAYMENT_METHOD,TIMESTAMP,STATUS"/>
+            <input name="ITEM_TITLE[0]" type="hidden" value="Product 101"/>
+            <input name="ITEM_ID[0]" type="hidden" value="101"/>
+            <input name="ITEM_QUANTITY[0]" type="hidden" value="2"/>
+            <input name="ITEM_UNIT_PRICE[0]" type="hidden" value="300.00"/>
+            <input name="ITEM_VAT_PERCENT[0]" type="hidden" value="15.00"/>
+            <input name="ITEM_DISCOUNT_PERCENT[0]" type="hidden" value="50"/>
+            <input name="ITEM_TYPE[0]" type="hidden" value="1"/>
+            <input name="ITEM_TITLE[1]" type="hidden" value="Product 202"/>
+            <input name="ITEM_ID[1]" type="hidden" value="202"/>
+            <input name="ITEM_QUANTITY[1]" type="hidden" value="4"/>
+            <input name="ITEM_UNIT_PRICE[1]" type="hidden" value="12.50"/>
+            <input name="ITEM_VAT_PERCENT[1]" type="hidden" value="0"/>
+            <input name="ITEM_DISCOUNT_PERCENT[1]" type="hidden" value="0"/>
+            <input name="ITEM_TYPE[1]" type="hidden" value="1"/>
+            <input name="MSG_UI_MERCHANT_PANEL" type="hidden"
+                   value="Order 123456"/>
+            <input name="URL_NOTIFY" type="hidden"
+                   value="http://www.example.com/notify"/>
+            <input name="LOCALE" type="hidden" value="en_US"/>
+            <input name="CURRENCY" type="hidden" value="EUR"/>
+            <input name="REFERENCE_NUMBER" type="hidden" value="REF-0001"/>
+            <input name="PAYMENT_METHODS" type="hidden" value="1"/>
+            <input name="PAYER_PERSON_PHONE" type="hidden" value="01234567890"/>
+            <input name="PAYER_PERSON_EMAIL" type="hidden"
+                   value="john.doe@example.com"/>
+            <input name="PAYER_PERSON_FIRSTNAME" type="hidden" value="John"/>
+            <input name="PAYER_PERSON_LASTNAME" type="hidden" value="Doe"/>
+            <input name="PAYER_COMPANY_NAME" type="hidden" value="Test Company"/>
+            <input name="PAYER_PERSON_ADDR_STREET" type="hidden"
+                   value="Test Street 1"/>
+            <input name="PAYER_PERSON_ADDR_POSTAL_CODE" type="hidden"
+                   value="608009"/>
+            <input name="PAYER_PERSON_ADDR_TOWN" type="hidden"
+                   value="Test Town"/>
+            <input name="PAYER_PERSON_ADDR_COUNTRY" type="hidden" value="AA"/>
+            <input name="VAT_IS_INCLUDED" type="hidden" value="1"/>
+            <input name="ALG" type="hidden" value="1"/>
+            <input name="AUTHCODE" type="hidden"
+                   value="661A6766D2FCC6768232D54A0DC634D812619D32F71DFA56F8A3B61FDFD77262"/>
+            <input type="submit" value="Pay here"/>
+        </form>
+        <!--        <div>-->
+        <!--            <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>-->
+        <!--            <input type="hidden" name="MID" t-att-value='MID'/>-->
+        <!--            <input type="hidden" name="URL_SUCCESS" t-att-value='url_success'/><input type="hidden" name="URL_CANCEL" t-att-value='url_cancel'/>-->
+        <!--            <input type="hidden" name="order_number" t-att-value='order_number'/>-->
+        <!--            <input type="hidden" name="params_in" t-att-value='params_in'/>-->
+        <!--            <input type="hidden" name="params_out" t-att-value='params_out'/>-->
+        <!--            <input type="hidden" name="amount" t-att-value='amount'/>-->
+        <!--            <input type="hidden" name="locale" t-att-value='locale'/>-->
+
+        <!--        </div>-->
     </template>
 </odoo>
