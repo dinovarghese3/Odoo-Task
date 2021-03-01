@@ -22,7 +22,5 @@
         'data/paytrail_acquirer.xml',
     ],
     # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+
 }

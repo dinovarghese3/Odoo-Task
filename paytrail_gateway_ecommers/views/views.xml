@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="payment_acquirer_form_paytm" model="ir.ui.view">
         <field name="name">payment.acquirer.inherit</field>
@@ -7,25 +6,10 @@
         <field name="arch" type="xml">
             <xpath expr='//group[@name="acquirer"]' position='after'>
                 <group attrs="{'invisible': [('provider', '!=', 'paytrail')]}">
-                <field name="paytrail_merchant_id"/>
-                <field name="paytrail_merchant_key" password="True"/>
-            </group>
+                    <field name="paytrail_merchant_id"/>
+                    <field name="paytrail_merchant_key" password="True"/>
+                </group>
             </xpath>
         </field>
     </record>
-
-<!--    <record id="payment_acquirer_form_paytrail" model="ir.ui.view">-->
-<!--        <field name="name">payment.acquirer.form.inherit</field>-->
-<!--        <field name="model">payment.acquirer</field>-->
-<!--        <field name="inherit_id" ref="payment.acquirer_form"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <xpath expr='//group[@name="acquirer"]' position='inside'>-->
-<!--                <group attrs="{'invisible': [('provider', '!=', 'paytrail')]}">-->
-<!--                    <field name="paytrail_key_id" attrs="{'required':[ ('provider', '=', 'paytrail'), ('state', '!=', 'disabled')]}"/>-->
-<!--                    <field name="paytrail_key_secret" attrs="{'required':[ ('provider', '=', 'paytrail'), ('state', '!=', 'disabled')]}"/>-->
-
-<!--                </group>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
 </odoo>

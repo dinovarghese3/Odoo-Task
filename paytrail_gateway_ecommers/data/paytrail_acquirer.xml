@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
 
 
     <record id="payment_acquirer_paytrail" model="payment.acquirer">
@@ -8,7 +8,6 @@
         <field name="provider">paytrail</field>
         <field name="image_128" type="base64"
                file="paytrail_gateway_ecommers/static/src/img/paytrail_icon.png"/>
-
         <field name="company_id" ref="base.main_company"/>
         <field name="description" type="html">
             <p>
@@ -24,15 +23,12 @@
         </field>
         <field name="payment_icon_ids" eval='[(6, 0, [ref("payment.payment_icon_cc_maestro"),
                                                         ref("payment.payment_icon_cc_mastercard"),
-                                                        ref("payment.payment_icon_cc_discover"),
-                                                        ref("payment.payment_icon_cc_diners_club_intl"),
-                                                        ref("payment.payment_icon_cc_jcb"),
                                                         ref("payment.payment_icon_cc_american_express"),
                                                         ref("payment.payment_icon_cc_unionpay"),
                                                         ref("payment.payment_icon_cc_visa")])]'/>
         <field name="view_template_id" ref="paytrail_form"/>
-        <field name="paytrail_merchant_id"></field>
-        <field name="paytrail_merchant_key"></field>
+        <field name="paytrail_merchant_id">13466</field>
+        <field name="paytrail_merchant_key">6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ</field>
+        <field name="state">test</field>
     </record>
-
 </odoo>

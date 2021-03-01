@@ -1,154 +1,108 @@
-# -*- coding: utf-8 -*-
 import base64
 import hashlib
+import string
 from datetime import datetime
+import random
 
-# from Crypto.Cipher import AES
-# import AES
-import requests
+from Crypto.Cipher import AES
 from werkzeug import urls
 
 from odoo import models, fields, api
-from odoo.service import common
-from odoo.tools.safe_eval import json
+
+import logging
+import hmac
+
+_logger = logging.getLogger(__name__)
 
 
-class paytrail_gateway_ecommerce(models.Model):
+class Paytrail_gateway(models.Model):
     _inherit = 'payment.acquirer'
     provider = fields.Selection(selection_add=[('paytrail', 'Paytrail')],
                                 ondelete={'paytrail': 'set '
                                                       'default'})
-
-    paytrail_merchant_id = fields.Char(string='Merchant ID',
-                                       required_if_provider='paytrail',
+    # MERCHANT_ID
+    paytrail_merchant_id = fields.Char('Merchant ID',
+                                       required_if_provider='Paytrail',
                                        groups='base.group_user')
-
-    #
-    paytrail_merchant_key = fields.Char(string='Merchant Key',
-                                        required_if_provider='paytrail',
+    paytrail_merchant_key = fields.Char('Merchant Key',
+                                        required_if_provider='Paytrail',
                                         groups='base.group_user')
 
     @api.model
     def _get_paytrail_urls(self):
-        """ URL """
-        return {'paytrail_from_url': 'https://payment.paytrail.com/e2'}
+        """ Atom URLS """
+        # print('url')
+        return {
+            'paytrail_form_url': 'https://payment.paytrail.com/e2'
+        }
 
     def paytrail_get_form_action_url(self):
-        # print(urls.url_join(self.get_base_url(), '/payment/paytail/redirect/'))
+        # print('action')
         return self._get_paytrail_urls()['paytrail_form_url']
 
     def paytrail_form_generate_values(self, values):
-        print('self', self)
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param(
             'web.base.url')
-        MID = int(self.paytrail_merchant_id)
+        # print("form", base_url)
         now = datetime.now()
-        url_success = 'http://www.example.com/success'
-        url_cancel = 'http://www.example.com/cancel'
-        order_number = 123456
         merchant_key = self.paytrail_merchant_key
+        print("m key", merchant_key)
         payment_id = ''
         timestamp = ''
-        status = ''
+        status = 'test'
         locale = "en_US"
-        #
-        # print('url', base_url, MID, merchant_key)
-        print("value", values)
+        # print("dict")
+
         paytrail_values = dict(
-            MID=int(self.paytrail_merchant_id),
-            #
-            url_success='http://www.example.com/success',
-            url_cancel='http://www.example.com/cancel',
-            #
-            order_number=123456,
-            #
-            params_in=[MID, url_success, url_cancel, order_number, locale],
-            locale="en_US",
-            params_out=[payment_id, timestamp, status],
-            amount='350',
+            Hash='6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ',
+            MERCHANT_ID=self.paytrail_merchant_id,
+            # url_success=base_url + '/payment.paytrail.com/return/',
+            URL_SUCCESS=urls.url_join(base_url, '/payment/paytrail/success'),
+            URL_CANCEL=urls.url_join(base_url, '/payment/paytrail/cancel'),
+            ORDER_NUMBER='123456',
+            # order_number1 = str(values['reference']),
+            PARAMS_IN='MID, url_success, url_cancel, order_number,locale',
+            LOCALE="en_US",
+            PARAMS_OUT='payment_id, timestamp, status',
+            AMOUNT='350',
         )
-        paytrail_values['reqHashKey'] = self.generate_checksum(paytrail_values,
-                                                               self.paytrail_merchant_id)
-
-        # paytrail_values[
-        #     'reqHashKey'] = '661A6766D2FCC6768232D54A0DC634D812619D32F71DFA56F8A3B61FDFD77262'
-        r = requests.post(url=self.paytrail_get_form_action_url(),
-                          data=paytrail_values)
-        # # print("rrrrrrrrrr :", r)
-        #
-        paytm_values_json = json.dumps(paytrail_values, indent=2)
+        # print("done")
+        paytrail_values['AUTHCODE'] = self.generate_checksum_by_str(
+            paytrail_values,
+            self.paytrail_merchant_key)
+        print("paytrail_values", paytrail_values)
         return paytrail_values
-
-    def generate_checksum(self, param_dict, merchant_key, salt=None):
-        params_string = self.__get_param_string__(param_dict)
-        return self.generate_checksum_by_str(params_string, merchant_key, salt)
-
-    def generate_checksum_by_str(self, param_str, merchant_key, salt=None):
-        IV = "@@@@&&&&####$$$$"
-        params_string = param_str
-        salt = salt if salt else self.__id_generator__(4)
-        final_string = '%s|%s' % (params_string, salt)
-
-        hasher = hashlib.sha256(final_string.encode())
-        hash_string = hasher.hexdigest()
-
-        hash_string += salt
-
-        return self.__encode__(hash_string, IV, merchant_key)
 
     def __get_param_string__(self, params, escape_refund=True):
         params_string = []
-
-        for key in sorted(params.keys()):
+        # print("getparam")
+        for key in params.keys():
+            # print("key", params[key])
             if ("|" in params[key] or (
                     escape_refund == True and "REFUND" in params[key])):
                 respons_dict = {}
-        exit()
-        value = params[key]
-        params_string.append('' if value == 'null' else str(value))
+                exit()
+            value = params[key]
+            # print(type(value))
+            if type(value) != list:
+                params_string.append('' if value == 'null' else str(value))
+            else:
+                params_string.append(
+                    '' if value == 'null' else str(value)[1:-1])
         return '|'.join(params_string)
 
-    def verify_checksum(self, param_dict, merchant_key, checksum):
+    #     return '6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ|13466|http://www.example.com/success|http://www.example.com/cancel|123456|MERCHANT_ID,URL_SUCCESS,URL_CANCEL,ORDER_NUMBER,PARAMS_IN,PARAMS_OUT,ITEM_TITLE[0],ITEM_ID[0],ITEM_QUANTITY[0],ITEM_UNIT_PRICE[0],ITEM_VAT_PERCENT[0],ITEM_DISCOUNT_PERCENT[0],ITEM_TYPE[0],ITEM_TITLE[1],ITEM_ID[1],ITEM_QUANTITY[1],ITEM_UNIT_PRICE[1],ITEM_VAT_PERCENT[1],ITEM_DISCOUNT_PERCENT[1],ITEM_TYPE[1],MSG_UI_MERCHANT_PANEL,URL_NOTIFY,LOCALE,CURRENCY,REFERENCE_NUMBER,PAYMENT_METHODS,PAYER_PERSON_PHONE,PAYER_PERSON_EMAIL,PAYER_PERSON_FIRSTNAME,PAYER_PERSON_LASTNAME,PAYER_COMPANY_NAME,PAYER_PERSON_ADDR_STREET,PAYER_PERSON_ADDR_POSTAL_CODE,PAYER_PERSON_ADDR_TOWN,PAYER_PERSON_ADDR_COUNTRY,VAT_IS_INCLUDED,ALG|ORDER_NUMBER,PAYMENT_ID,AMOUNT,CURRENCY,PAYMENT_METHOD,TIMESTAMP,STATUS|Product 101|101|2|300.00|15.00|50|1|Product 202|202|4|12.50|0|0|1|Order 123456|http://www.example.com/notify|en_US|EUR|REF-0001|1|01234567890|john.doe@example.com|John|Doe|Test Company|Test Street 1|608009|Test Town|AA|1|1'
 
-        # Remove checksum
-        if 'CHECKSUMHASH' in param_dict:
-            param_dict.pop('CHECKSUMHASH')
-
-        params_string = self.__get_param_string__(param_dict, False)
-        return self.verify_checksum_by_str(params_string, merchant_key,
-                                           checksum)
-
-    def generate_checksum(self, param_dict, merchant_key, salt=None):
-        params_string = self.__get_param_string__(param_dict)
-        return self.generate_checksum_by_str(params_string, merchant_key, salt)
-
-#
-# class PaymentTransaction(models.Model):
-#     _inherit = 'payment.transaction'
-#
-#     @api.model
-#     def _create_paytrail_capture(self, data):
-#         print("self", self, "value", data)
-#         payment_acquirer = self.env['payment.acquirer'].search(
-#             [('provider', '=', 'paytrail')], limit=1)
-#         payment_url = "https://payment.paytrail.com/e2" % (
-#             payment_acquirer.paytrail_key_id,
-#             payment_acquirer.paytrail_key_secret,
-#             data.get('payment_id'))
-#         try:
-#             payment_response = requests.get(payment_url)
-#             payment_response = payment_response.json()
-#         except Exception as e:
-#             raise e
-#         # reference = payment_response.get('notes', {}).get('order_id', False)
-#         # if reference:
-#         #     transaction = self.search([('reference', '=', reference)])
-#         #     capture_url = "https://%s:%s@api.razorpay.com/v1/payments/%s/capture" % (payment_acquirer.razorpay_key_id, payment_acquirer.razorpay_key_secret, data.get('payment_id'))
-#         #     charge_data = {'amount': int(transaction.amount * 100)}
-#         #     try:
-#         #         payment_response = requests.post(capture_url, data=charge_data)
-#         #         payment_response = payment_response.json()
-#         #     except Exception as e:
-#         #         raise e
-#         return payment_response
+    def generate_checksum_by_str(self, param_str, merchant_key, salt=None):
+        # IV = "@@@@&&&&####$$$$".encode()
+        params_string = self.__get_param_string__(param_str)
+        print(params_string)
+        # p="6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ|13466|http://www.example.com/success|http://www.example.com/cancel|123456|MERCHANT_ID,URL_SUCCESS,URL_CANCEL,ORDER_NUMBER,PARAMS_IN,PARAMS_OUT,AMOUNT|PAYMENT_ID,TIMESTAMP,STATUS|350.00"
+        hasher = hashlib.sha256(params_string.encode("UTF-8"))
+        # print("p", p)
+        # hasher = hashlib.sha256(p.encode("UTF-8"))
+        hash_string = hasher.hexdigest()
+        hash = hash_string.upper()
+        print("hasher", hash)
+        return hash
