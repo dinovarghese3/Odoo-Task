@@ -14,9 +14,7 @@ class PortalLeave(http.Controller):
 
         all_leaves = request.env['hr.leave'].sudo().search(
             [('user_id', '=', request.env.uid)])
-        # print(all_leaves)
         keep = QueryURL()  # For sending value in url
-        # print("LLL", keep)
         return request.render('portal_leave.leave_request_portal',
                               {'all_leaves': all_leaves, 'keep': keep})
 
@@ -26,7 +24,6 @@ class PortalLeave(http.Controller):
         """ Cancel button Click """
         if id:
             # id of leave request from Url
-            # print(id)
             request.env['hr.leave'].sudo().search(
                 [('id', '=', id)]).unlink()
         vals = "Record Deleted"
@@ -68,13 +65,6 @@ class RequestLeave(http.Controller):
     def index(self, **kw):
         """ Leave request Creation Form"""
         leave_type = request.env['hr.leave.type'].sudo().search([])
-        # custom_hour=request.env['hr.leave'].sudo().search([])
-
-        # custom_hour_typ=custom_hour.request_hour_from
-        # leave = request.env['hr.leave'].name
-        # print(leave)
-        # selection=leave.request_hour_from
-        # print(selection)
         return request.render('portal_leave.request_leave_apply',
                               {'leave_type': leave_type,
                                'request_hour_from': self.request_hour_from,
@@ -84,39 +74,25 @@ class RequestLeave(http.Controller):
                 website=True, csrf=False)
     def leave_request_submition(self, **post):
         """ Submit Button Press. Create a leave """
-        # curent = fields.Many2one('hr.employee', "current_user",
-        #                          default=lambda self: self.env.user)
-        # print(curent)
         current_user = request.env['hr.employee'].sudo().search(
             [('user_id', '=',
               request.env.uid)])  # getting current user loged in
-        # print("current user", current_user.name)
         leave_type = request.env['hr.leave.type'].sudo().search([])
         alert_date = ""
         duration = 0
         leave_id = request.env['hr.leave.type'].sudo().search(
             [('name', '=', post.get(
                 'leave_type'))])  # geting the leave type the user selected
-        # print("leave id", leave_id.id)
         if post.get('half_day'):
             # checking the Half day check box is enabled or not if enabled set
             # the duration as 4 and set the start date and end date same
             duration = 4
-            # print("duration half_day :", duration)
             end_date = post.get('start_date')
         else:
             end_date = post.get('end_date')
         if post.get('custom_hours'):
             # checking the custom hours in checked or not
-            # print("leave type to :", post.get('leave_type_to'))
-            # print("leave type from :", post.get('leave_type_from'))
-            # duration = post.get('leave_type_from') - post.get('leave_type_to')
             duration = 0
-            # print("looop")
-            # for i in self.filtered(
-            #         lambda l: l[1] == post.get('leave_type_from')):
-            #     print("i :", i[0])
-
             for i in self.request_hour_from:
                 if i[1] == post.get('leave_type_to'):
                     self.index_of_to = i[0]
@@ -131,11 +107,7 @@ class RequestLeave(http.Controller):
                 'start_date')  # seting the end date same as start date
         else:
             duration = post.get('duration')
-        print("end_date :", end_date)
-        print("start date :", post.get('start_date'))
-        # if not end_date:  # in case end date missing
-        #     end_date = post.get('start_date')
-        print("duration last", duration)
+
         if not self.index_of_from and not self.index_of_to:
             self.index_of_from = 0.0
             self.index_of_to = 0.0

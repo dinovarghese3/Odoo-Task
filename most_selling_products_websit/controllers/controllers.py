@@ -39,31 +39,7 @@ class WebsiteSort(Home):
             order_line = order.order_line
             for product in order_line:
                 product.product_id.sold_qty = product.product_id.sold_qty + 1
-        # results = request.env['website.track'].sudo().read_group(
-        #     [ ('url', '!=', False)],
-        #     ['visitor_id', 'page_id', 'url'], ['visitor_id', 'page_id', 'url'],
-        #     lazy=False)
-        # mapped_data = {}
-        # for result in results:
-        #     visitor_info = mapped_data.get(result['visitor_id'][0],
-        #                                    {'page_count': 0,
-        #                                     'visitor_page_count': 0,
-        #                                     'page_ids': set()})
-        #     visitor_info['visitor_page_count'] += result['__count']
-        #     visitor_info['page_count'] += 1
-        #     if result['page_id']:
-        #         visitor_info['page_ids'].add(result['page_id'][0])
-        #     mapped_data[result['visitor_id'][0]] = visitor_info
-        #     print(visitor_info)
-        # #
-        # for visitor in self:
-        #     visitor_info = mapped_data.get(visitor.id, {'page_count': 0,
-        #                                                 'visitor_page_count': 0,
-        #                                                 'page_ids': set()})
-        #     visitor.page_ids = [(6, 0, visitor_info['page_ids'])]
-        #     visitor.visitor_page_count = visitor_info['visitor_page_count']
-        #     visitor.page_count = visitor_info['page_count']
-        #     print(visitor.page_count)
+
         products_vist = request.env['website.track'].sudo().search(
             [('visit_datetime', '<=', date),
              ('visit_datetime', '>=', date_start),
@@ -81,7 +57,6 @@ class WebsiteSort(Home):
         products_most_vist = request.env['product.template'].sudo().search(
             [('is_published', '=', True),
              ('no_of_view', '>', 0)], order='no_of_view desc', limit=8)
-        # print(products_most_vist)
         for each in products_most_vist:
             each.most_visited = True
 

@@ -141,11 +141,6 @@ class RentRequest(models.Model):
         """ Checking the invoice is paid or not"""
         # self.is_paid = False
         for rec in self:
-            # print("is paid")
-            # print(self.env['account.move'].search_count(
-            #     ['&', ('partner_id', '=', self.customer_id.id), ('invoice_line_ids.name', '=', self.vehicle_id.name),
-            #      ('invoice_date', '=', self.to_date)]))
-            # print(rec.invoice_id.payment_state)
             for i in self.env['account.move'].search(
                     ['&', ('partner_id', '=', self.customer_id.id),
                      ('invoice_line_ids.name', '=', self.vehicle_id.name),

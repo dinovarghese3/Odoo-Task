@@ -27,8 +27,8 @@
                                                         ref("payment.payment_icon_cc_unionpay"),
                                                         ref("payment.payment_icon_cc_visa")])]'/>
         <field name="view_template_id" ref="paytrail_form"/>
-        <field name="paytrail_merchant_id">13466</field>
-        <field name="paytrail_merchant_key">6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ</field>
+        <field name="paytrail_merchant_id"></field>
+        <field name="paytrail_merchant_key"></field>
         <field name="state">test</field>
     </record>
 </odoo>

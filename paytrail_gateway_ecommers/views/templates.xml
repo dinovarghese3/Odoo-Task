@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="paytrail_form">
-        <form action="https://payment.paytrail.com/e2" method="post">
-          <input name="MERCHANT_ID" type="hidden" value="13466"/>
-          <input name="URL_SUCCESS" type="hidden" value="http://www.example.com/success"/>
-          <input name="URL_CANCEL" type="hidden" value="http://www.example.com/cancel"/>
-          <input name="ORDER_NUMBER" type="hidden" value="123456"/>
-          <input name="PARAMS_IN" type="hidden" value="MERCHANT_ID,URL_SUCCESS,URL_CANCEL,ORDER_NUMBER,PARAMS_IN,PARAMS_OUT,AMOUNT"/>
-          <input name="PARAMS_OUT" type="hidden" value="PAYMENT_ID,TIMESTAMP,STATUS"/>
-          <input name="AMOUNT" type="hidden" value="350.00"/>
-          <input name="AUTHCODE" type="hidden" value="BBDF8997A56F97DC0A46C99C88C2EEF9D541AAD59CFF2695D0DD9AF474086D71"/>
-          <input type="submit" value="Pay here"/>
-        </form>
+        <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+        <input name="MERCHANT_ID" type="hidden" t-att-value="MERCHANT_ID"/>
+        <input name="URL_SUCCESS" type="hidden" t-att-value="URL_SUCCESS"/>
+        <input name="URL_CANCEL" type="hidden" t-att-value="URL_CANCEL"/>
+        <input name="LOCALE" type="hidden" t-att-value="en_US"/>
+        <input name="ORDER_NUMBER" type="hidden" t-att-value="ORDER_NUMBER"/>
+        <input name="PARAMS_IN" type="hidden" t-att-value="PARAMS_IN"/>
+        <input name="PARAMS_OUT" type="hidden" t-att-value="PARAMS_OUT"/>
+        <input name="AMOUNT" type="hidden" t-att-value="AMOUNT"/>
+        <input name="AUTHCODE" type="hidden" t-att-value="AUTHCODE"/>
     </template>
 </odoo>
