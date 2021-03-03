@@ -5,5 +5,5 @@
 - [x] Odoo 13 pos task2 - product video
 - [x] Odoo 14 Website task1 - Top selling product and Most visited product
 - [x] Odoo 14 website task2 - Leave request from website portal
-- [ ] Odoo 14 Integration   - Paytrail Payment gateway integration with e-commerce   
+- [x] Odoo 14 Integration   - Paytrail Payment gateway integration with e-commerce   
 
